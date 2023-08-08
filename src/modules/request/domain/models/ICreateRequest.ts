@@ -1,6 +1,4 @@
-import { Assistant } from "@prisma/client";
-
-export interface ICreateRequests {
+export interface ICreateRequest {
   subject: string;
   status: string;
   clientId: number;

@@ -26,7 +26,7 @@ export default class AssistantsRepository implements IAssistantsRepository {
   }
 
   public async findById(assistantId: number) {
-    const assistant = this.ormRepository.assistant.findUnique({
+    const assistant = await this.ormRepository.assistant.findUnique({
       where: { id: assistantId },
       include: {
         team: true,
@@ -40,7 +40,7 @@ export default class AssistantsRepository implements IAssistantsRepository {
   };
 
   public async update({ assistantId, data }: IUpdateAssistant) {
-    const updatedAssistant = this.ormRepository.assistant.update({
+    const updatedAssistant = await this.ormRepository.assistant.update({
       where: { id: assistantId },
       data,
     });
@@ -51,7 +51,7 @@ export default class AssistantsRepository implements IAssistantsRepository {
   };
 
   public async delete(assistantId: number) {
-    const deletedAssistant = this.ormRepository.assistant.delete({
+    const deletedAssistant = await this.ormRepository.assistant.delete({
       where: { id: assistantId },
     });
 

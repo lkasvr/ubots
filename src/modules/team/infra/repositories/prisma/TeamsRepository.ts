@@ -11,7 +11,7 @@ export default class ClientsRepository implements ITeamsRepository {
   }
 
   public async create({ name, assistants }: ICreateTeam) {
-    const team = this.ormRepository.team.create({
+    const team = await this.ormRepository.team.create({
       data: {
         name,
         assistants: {
@@ -29,7 +29,7 @@ export default class ClientsRepository implements ITeamsRepository {
   }
 
   public async findById(teamId: number) {
-    const team = this.ormRepository.team.findUnique({
+    const team = await this.ormRepository.team.findUnique({
       where: { id: teamId },
       include: {
         assistants: true,
@@ -43,7 +43,7 @@ export default class ClientsRepository implements ITeamsRepository {
   };
 
   public async update({ teamId, data }: IUpdateTeam) {
-    const updatedTeam = this.ormRepository.team.update({
+    const updatedTeam = await this.ormRepository.team.update({
       where: { id: teamId },
       data
     });
@@ -54,7 +54,7 @@ export default class ClientsRepository implements ITeamsRepository {
   };
 
   public async delete(teamId: number) {
-    const deletedTeam = this.ormRepository.team.delete({
+    const deletedTeam = await this.ormRepository.team.delete({
       where: { id: teamId }
     });
 
