@@ -9,3 +9,37 @@ datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
+
+model Client {
+  id       Int       @id @default(autoincrement())
+  name     String
+  email    String    @unique
+  requests Request[]
+}
+
+model Assistant {
+  id       Int       @id @default(autoincrement())
+  name     String
+  team     Team      @relation(fields: [teamId], references: [id])
+  teamId   Int
+  requests Request[]
+}
+
+model Team {
+  id         Int         @id @default(autoincrement())
+  name       String
+  assistants Assistant[]
+  requests   Request[]
+}
+
+model Request {
+  id          Int        @id @default(autoincrement())
+  subject     String
+  status      String
+  client      Client     @relation(fields: [clientId], references: [id])
+  clientId    Int
+  Team        Team?      @relation(fields: [teamId], references: [id])
+  teamId      Int?
+  Assistant   Assistant? @relation(fields: [assistantId], references: [id])
+  assistantId Int?
+}
