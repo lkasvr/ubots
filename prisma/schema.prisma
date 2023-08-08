@@ -38,8 +38,8 @@ model Request {
   status      String
   client      Client     @relation(fields: [clientId], references: [id])
   clientId    Int
-  Team        Team?      @relation(fields: [teamId], references: [id])
+  team        Team?      @relation(fields: [teamId], references: [id])
   teamId      Int?
-  Assistant   Assistant? @relation(fields: [assistantId], references: [id])
+  assistant   Assistant? @relation(fields: [assistantId], references: [id])
   assistantId Int?
 }
