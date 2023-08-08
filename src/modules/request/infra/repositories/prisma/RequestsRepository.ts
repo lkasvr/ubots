@@ -27,8 +27,6 @@ export default class ClientsRepository implements IRequestsRepository {
       }
     });
 
-    await this.ormRepository.$disconnect();
-
     return request;
   }
 
@@ -40,8 +38,6 @@ export default class ClientsRepository implements IRequestsRepository {
         assistant: true,
       }
     });
-
-    await this.ormRepository.$disconnect();
 
     return request;
   };
@@ -55,8 +51,6 @@ export default class ClientsRepository implements IRequestsRepository {
         team: true,
       }
     });
-
-    await this.ormRepository.$disconnect();
 
     return request;
   };
@@ -86,13 +80,22 @@ export default class ClientsRepository implements IRequestsRepository {
     return request;
   };
 
+  public async find() {
+    const requests = await this.ormRepository.request.findMany({
+      include: {
+        client: true,
+        team: true,
+      }
+    });
+
+    return requests;
+  };
+
   public async update({ requestId, data }: IUpdateRequest) {
     const requestUpdated = await this.ormRepository.request.update({
       where: { id: requestId },
       data,
     });
-
-    await this.ormRepository.$disconnect();
 
     return requestUpdated;
   };
@@ -104,8 +107,6 @@ export default class ClientsRepository implements IRequestsRepository {
         client: true
       }
     });
-
-    await this.ormRepository.$disconnect();
 
     return deletedRequest;
   };

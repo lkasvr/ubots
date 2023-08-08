@@ -8,6 +8,7 @@ export default interface TeamsRepository {
   findByStatus: (status: string) => Promise<Request[] | null>;
   findBySubject: (subject: string) => Promise<Request[] | null>;
   findByAssistant: (assistantId: number) => Promise<Request[] | null>;
+  find: () => Promise<Request[] | null>;
   update: (data: IUpdateRequest) => Promise<Request>;
   delete: (requestId: number) => Promise<Request>;
 }

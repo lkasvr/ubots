@@ -1,7 +1,7 @@
-import { Request } from "@prisma/client";
+type requestId = { id: number };
 
 export interface ICreateClient {
   name: string;
   email: string;
-  requests?: [Request, Request, Request];
+  requestsIds?: [requestId, requestId, requestId];
 }

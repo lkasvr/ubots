@@ -3,43 +3,40 @@ import ITeamsRepository from "@modules/team/domain/repositories//ITeamsRepositor
 import { ICreateTeam } from "@modules/team/domain/models/ICreateTeam";
 import { IUpdateTeam } from '@modules/team/domain/models/IUpdateTeam';
 
-export default class ClientsRepository implements ITeamsRepository {
+export default class TeamsRepository implements ITeamsRepository {
   private ormRepository: PrismaClient;
 
   constructor() {
     this.ormRepository = new PrismaClient();
   }
 
-  public async create({ name, assistants }: ICreateTeam) {
+  public async create({ name }: ICreateTeam) {
     const team = await this.ormRepository.team.create({
       data: {
-        name,
-        assistants: {
-          create: assistants
-        }
+        name
       },
-      include: {
-        assistants: true
-      }
     });
-
-    await this.ormRepository.$disconnect();
 
     return team;
   }
 
   public async findById(teamId: number) {
     const team = await this.ormRepository.team.findUnique({
-      where: { id: teamId },
+      where: { id: teamId }
+    });
+
+    return team;
+  };
+
+  public async find() {
+    const teams = await this.ormRepository.team.findMany({
       include: {
-        assistants: true,
-        requests: true
+        assistants: { select: { id: true, name: true } },
+        requests: { select: { id: true, status: true, subject: true, client: { select: { id: true, name: true } } } }
       }
     });
 
-    await this.ormRepository.$disconnect();
-
-    return team;
+    return teams;
   };
 
   public async update({ teamId, data }: IUpdateTeam) {
@@ -48,8 +45,6 @@ export default class ClientsRepository implements ITeamsRepository {
       data
     });
 
-    await this.ormRepository.$disconnect();
-
     return updatedTeam;
   };
 
@@ -57,8 +52,6 @@ export default class ClientsRepository implements ITeamsRepository {
     const deletedTeam = await this.ormRepository.team.delete({
       where: { id: teamId }
     });
-
-    await this.ormRepository.$disconnect();
 
     return deletedTeam;
   };

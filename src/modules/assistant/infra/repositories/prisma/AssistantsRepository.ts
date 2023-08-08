@@ -17,10 +17,11 @@ export default class AssistantsRepository implements IAssistantsRepository {
         team: {
           connect: { id: teamId }
         },
+      },
+      include: {
+        team: { select: { name: true } }
       }
     });
-
-    await this.ormRepository.$disconnect();
 
     return assistant;
   }
@@ -28,15 +29,20 @@ export default class AssistantsRepository implements IAssistantsRepository {
   public async findById(assistantId: number) {
     const assistant = await this.ormRepository.assistant.findUnique({
       where: { id: assistantId },
+    });
+
+    return assistant;
+  };
+
+  public async find() {
+    const assistants = await this.ormRepository.assistant.findMany({
       include: {
-        team: true,
-        requests: true,
+        team: { select: { name: true } },
+        requests: { select: { id: true, status: true, subject: true, client: { select: { id: true, name: true } } } },
       }
     });
 
-    await this.ormRepository.$disconnect();
-
-    return assistant;
+    return assistants;
   };
 
   public async update({ assistantId, data }: IUpdateAssistant) {
@@ -45,8 +51,6 @@ export default class AssistantsRepository implements IAssistantsRepository {
       data,
     });
 
-    await this.ormRepository.$disconnect();
-
     return updatedAssistant;
   };
 
@@ -54,8 +58,6 @@ export default class AssistantsRepository implements IAssistantsRepository {
     const deletedAssistant = await this.ormRepository.assistant.delete({
       where: { id: assistantId },
     });
-
-    await this.ormRepository.$disconnect();
 
     return deletedAssistant;
   };
