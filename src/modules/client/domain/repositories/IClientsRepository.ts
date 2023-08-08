@@ -6,7 +6,7 @@ import { IReadClient } from "../models/IReadClient";
 
 export default interface ClientsRepository {
   create: (data: ICreateClient) => Promise<Client>;
-  findById: (data: IReadClient) => Promise<Client | null>;
+  findById: (clientId: IReadClient) => Promise<Client | null>;
   update: (data: IUpdateClient) => Promise<Client>;
   delete: (data: IDeleteClient) => Promise<Client>;
 }

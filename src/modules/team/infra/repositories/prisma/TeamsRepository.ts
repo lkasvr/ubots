@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import ITeamsRepository from "@modules/team/domain/repositories//ITeamsRepository";
 import { ICreateTeam } from "@modules/team/domain/models/ICreateTeam";
+import { IUpdateTeam } from '@modules/team/domain/models/IUpdateTeam';
 
 export default class ClientsRepository implements ITeamsRepository {
   private ormRepository: PrismaClient;
@@ -22,7 +23,44 @@ export default class ClientsRepository implements ITeamsRepository {
       }
     });
 
+    await this.ormRepository.$disconnect();
+
     return team;
   }
 
+  public async findById(teamId: number) {
+    const team = this.ormRepository.team.findUnique({
+      where: { id: teamId },
+      include: {
+        assistants: true,
+        requests: true
+      }
+    });
+
+    await this.ormRepository.$disconnect();
+
+    return team;
+  };
+
+  public async update({ teamId, data }: IUpdateTeam) {
+    const updatedTeam = this.ormRepository.team.update({
+      where: { id: teamId },
+      data
+    });
+
+    await this.ormRepository.$disconnect();
+
+    return updatedTeam;
+  };
+
+  public async delete(teamId: number) {
+    const deletedTeam = this.ormRepository.team.delete({
+      where: { id: teamId }
+    });
+
+    await this.ormRepository.$disconnect();
+
+    return deletedTeam;
+  };
 }
+
