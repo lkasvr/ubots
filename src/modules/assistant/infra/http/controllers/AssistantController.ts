@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import CreateAssistantService from '@modules/assistant/services/CreateAssistantService';
 import ListClientService from '@modules/assistant/services/ListAssistantService';
 import DeleteAssistantService from '@modules/assistant/services/DeleteAssistantService';
+import ShowAssistantService from '@modules/assistant/services/ShowAssistantService';
 
 export default class AssistantController {
 
@@ -24,6 +25,16 @@ export default class AssistantController {
       name,
       teamId
     });
+
+    return res.json(assistant);
+  }
+
+  public async show(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+
+    const showAssistantService = new ShowAssistantService();
+
+    const assistant = await showAssistantService.execute(Number(id));
 
     return res.json(assistant);
   }

@@ -3,7 +3,7 @@ import IAssistantsRepository from '../domain/repositories/IAssistantsRepository'
 import AssistantsRepository from '../infra/repositories/prisma/AssistantsRepository';
 import AppError from '@shared/errors/AppError';
 
-export default class ListAssistantService {
+export default class ShowAssistantService {
   private assistantsRepository: IAssistantsRepository;
   constructor() {
     this.assistantsRepository = new AssistantsRepository();

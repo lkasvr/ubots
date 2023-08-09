@@ -29,6 +29,10 @@ export default class AssistantsRepository implements IAssistantsRepository {
   public async findById(assistantId: number) {
     const assistant = await this.ormRepository.assistant.findUnique({
       where: { id: assistantId },
+      include: {
+        team: true,
+        requests: { select: { id: true, status: true } }
+      }
     });
 
     return assistant;

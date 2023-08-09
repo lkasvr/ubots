@@ -20,6 +20,16 @@ assistantsRouter.post(
   assistantController.create,
 );
 
+assistantsRouter.get(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+  }),
+  assistantController.show,
+);
+
 assistantsRouter.delete(
   '/:id',
   celebrate({
