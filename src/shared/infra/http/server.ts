@@ -14,7 +14,8 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({
       status: 'error',
-      message: error.message
+      message: error.message,
+      genericError: error.genericError
     });
   }
 

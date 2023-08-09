@@ -21,7 +21,7 @@ export default class ShowTeamService {
       if (error instanceof AppError) return error;
       console.error(error);
 
-      return new AppError(`${error}`);
+      return new AppError('Error', error);
     }
   }
 }

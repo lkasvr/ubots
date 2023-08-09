@@ -2,20 +2,23 @@ import { Assistant } from '@prisma/client';
 import IAssistantsRepository from '../domain/repositories/IAssistantsRepository';
 import AssistantsRepository from '../infra/repositories/prisma/AssistantsRepository';
 import AppError from '@shared/errors/AppError';
+import { IUpdateAssistant } from '../domain/models/IUpdateAssistant';
 
-export default class ListAssistantService {
+export default class UpdateAssistantService {
   private assistantsRepository: IAssistantsRepository;
   constructor() {
     this.assistantsRepository = new AssistantsRepository();
   }
 
-  public async execute(): Promise<Assistant[] | AppError> {
+  public async execute({ assistantId, data }: IUpdateAssistant): Promise<Assistant | AppError> {
     try {
-      const assistants = await this.assistantsRepository.find();
+      const assistant = await this.assistantsRepository.findById(assistantId);
 
-      if (!assistants) throw new AppError('Nenhum assistente encontrado');
+      if (!assistant) throw new AppError('Assistente não encontrado');
 
-      return assistants;
+      const updatedAssistant = await this.assistantsRepository.update({ assistantId, data });
+
+      return updatedAssistant;
     } catch (error) {
       if (error instanceof AppError) return error;
       console.error(error);

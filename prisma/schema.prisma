@@ -40,6 +40,6 @@ model Request {
   clientId    Int
   team        Team?      @relation(fields: [teamId], references: [id], onDelete: SetNull)
   teamId      Int?
-  assistant   Assistant? @relation(fields: [assistantId], references: [id])
+  assistant   Assistant? @relation(fields: [assistantId], references: [id], onDelete: SetNull)
   assistantId Int?
 }

@@ -30,6 +30,17 @@ assistantsRouter.get(
   assistantController.show,
 );
 
+assistantsRouter.put(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      assistantId: Joi.number().required(),
+      name: Joi.string().required(),
+    },
+  }),
+  assistantController.update,
+);
+
 assistantsRouter.delete(
   '/:id',
   celebrate({

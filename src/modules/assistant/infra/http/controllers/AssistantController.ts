@@ -4,6 +4,7 @@ import CreateAssistantService from '@modules/assistant/services/CreateAssistantS
 import ListClientService from '@modules/assistant/services/ListAssistantService';
 import DeleteAssistantService from '@modules/assistant/services/DeleteAssistantService';
 import ShowAssistantService from '@modules/assistant/services/ShowAssistantService';
+import UpdateAssistantService from '@modules/assistant/services/UpdateAssistantService';
 
 export default class AssistantController {
 
@@ -35,6 +36,16 @@ export default class AssistantController {
     const showAssistantService = new ShowAssistantService();
 
     const assistant = await showAssistantService.execute(Number(id));
+
+    return res.json(assistant);
+  }
+
+  public async update(req: Request, res: Response): Promise<Response> {
+    const { assistantId, name } = req.body;
+
+    const updateAssistantService = new UpdateAssistantService();
+
+    const assistant = await updateAssistantService.execute({ assistantId: Number(assistantId), data: { name } });
 
     return res.json(assistant);
   }
