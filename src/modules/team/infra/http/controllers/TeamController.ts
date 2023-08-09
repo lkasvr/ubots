@@ -18,12 +18,13 @@ export default class TeamController {
   }
 
   public async create(req: Request, res: Response): Promise<Response> {
-    const { name } = req.body;
+    const { name, subject } = req.body;
 
     const createTeam = new CreateTeamService();
 
     const team = await createTeam.execute({
-      name
+      name,
+      subject
     });
 
     return res.json(team);

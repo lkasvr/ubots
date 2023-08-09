@@ -24,7 +24,6 @@ export default interface RequestsRepository {
   create: (data: IRequestCreate) => Promise<Request>;
   findById: (requestId: number) => Promise<IRequestFindById | null>;
   findByStatus: (status: string) => Promise<Request[] | null>;
-  findBySubject: (subject: string) => Promise<Request[] | null>;
   findByAssistant: (assistantId: number) => Promise<Request[] | null>;
   find: () => Promise<Request[] | null>;
   update: (data: IRequestUpdate) => Promise<Request>;

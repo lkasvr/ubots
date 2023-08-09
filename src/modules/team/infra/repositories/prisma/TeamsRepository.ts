@@ -10,11 +10,20 @@ export default class TeamsRepository implements ITeamsRepository {
     this.ormRepository = new PrismaClient();
   }
 
-  public async create({ name }: ICreateTeam) {
+  public async create({ name, subject }: ICreateTeam) {
     const team = await this.ormRepository.team.create({
       data: {
-        name
+        name,
+        subject: {
+          connectOrCreate: {
+            where: { name: subject },
+            create: { name: subject }
+          }
+        }
       },
+      include: {
+        subject: { select: { id: true, name: true } }
+      }
     });
 
     return team;
@@ -24,7 +33,8 @@ export default class TeamsRepository implements ITeamsRepository {
     const team = await this.ormRepository.team.findUnique({
       where: { id: teamId },
       include: {
-        assistants: { select: { id: true } }
+        subject: { select: { id: true, name: true, } },
+        assistants: { select: { id: true } },
       }
     });
 
@@ -34,6 +44,18 @@ export default class TeamsRepository implements ITeamsRepository {
   public async findByName(name: string) {
     const team = await this.ormRepository.team.findUnique({
       where: { name },
+      include: {
+        subject: { select: { id: true, name: true, } },
+        assistants: { select: { id: true, name: true, requests: { select: { id: true, status: true } } } },
+      }
+    });
+
+    return team;
+  };
+
+  public async findBySubject(subject: string) {
+    const team = await this.ormRepository.team.findMany({
+      where: { subject: { name: subject } },
       include: {
         assistants: { select: { id: true, name: true, requests: { select: { id: true, status: true } } } },
       }
@@ -45,8 +67,9 @@ export default class TeamsRepository implements ITeamsRepository {
   public async find() {
     const teams = await this.ormRepository.team.findMany({
       include: {
+        subject: { select: { id: true, name: true, } },
         assistants: { select: { id: true, name: true } },
-        requests: { select: { id: true, status: true, subject: true, client: { select: { id: true, name: true } }, assistantId: true } }
+        requests: { select: { id: true, status: true, client: { select: { id: true, name: true } }, assistantId: true } }
       }
     });
 

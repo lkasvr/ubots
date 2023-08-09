@@ -3,8 +3,22 @@ import { ICreateTeam } from "../models/ICreateTeam";
 import { IUpdateTeam } from "../models/IUpdateTeam";
 
 export interface ITeamFind extends Team {
+  subject: { id: number; name: string; } | null;
   assistants: { id: number; name: string; }[] | null;
-  requests: { id: number; status: string; subject: string; client: { id: number; name: string; } }[] | null;
+  requests: { id: number; status: string; client: { id: number; name: string; } }[] | null;
+}
+
+export interface ITeamCreate extends Team {
+  subject: {
+    id: number;
+    name: string;
+  } | null;
+}
+
+export interface ITeamFindById extends Team {
+  assistants: {
+    id: number;
+  }[];
 }
 
 export interface ITeamFindByName extends Team {
@@ -15,17 +29,20 @@ export interface ITeamFindByName extends Team {
   }[];
 }
 
-export interface ITeamFindById extends Team {
+export interface ITeamFindBySubject extends Team {
   assistants: {
     id: number;
+    name: string;
+    requests: { id: number; status: string; }[]
   }[];
 }
 
 export default interface ITeamsRepository {
-  create: (data: ICreateTeam) => Promise<Team>;
-  findById: (teamId: number) => Promise<ITeamFindById | null>;
+  create: (data: ICreateTeam) => Promise<ITeamCreate>;
   find: () => Promise<ITeamFind[] | null>;
+  findById: (teamId: number) => Promise<ITeamFindById | null>;
   findByName: (name: string) => Promise<ITeamFindByName | null>;
+  findBySubject: (subject: string) => Promise<ITeamFindBySubject[] | null>;
   update: (data: IUpdateTeam) => Promise<Team>;
   delete: (teamId: number) => Promise<Team>;
 }

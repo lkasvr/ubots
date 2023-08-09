@@ -12,10 +12,12 @@ export default class RequestsRepository implements IRequestsRepository {
 
     const request = this.ormRepository.request.create({
       data: {
-        subject,
+        subject: {
+          connect: { name: subject }
+        },
         status,
         client: {
-          connect: { id: clientId }
+          connect: { id: clientId },
         },
         team: {
           connect: { id: teamId }
@@ -46,19 +48,6 @@ export default class RequestsRepository implements IRequestsRepository {
   public async findByStatus(status: string) {
     const request = await this.ormRepository.request.findMany({
       where: { status },
-      include: {
-        client: true,
-        assistant: true,
-        team: true,
-      }
-    });
-
-    return request;
-  };
-
-  public async findBySubject(subject: string) {
-    const request = await this.ormRepository.request.findMany({
-      where: { subject },
       include: {
         client: true,
         assistant: true,

@@ -35,7 +35,8 @@ model Team {
 
 model Request {
   id          Int        @id @default(autoincrement())
-  subject     Subject    @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  subjectId   Int
+  subject     Subject    @relation(fields: [subjectId], references: [id], onDelete: NoAction)
   status      String
   client      Client     @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId    Int
@@ -43,7 +44,6 @@ model Request {
   teamId      Int?
   assistant   Assistant? @relation(fields: [assistantId], references: [id], onDelete: SetNull)
   assistantId Int?
-  subjectId   Int
 }
 
 model Subject {

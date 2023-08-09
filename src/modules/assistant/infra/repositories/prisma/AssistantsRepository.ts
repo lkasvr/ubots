@@ -42,7 +42,7 @@ export default class AssistantsRepository implements IAssistantsRepository {
     const assistants = await this.ormRepository.assistant.findMany({
       include: {
         team: { select: { name: true } },
-        requests: { select: { id: true, status: true, subject: true, client: { select: { id: true, name: true } } } },
+        requests: { select: { id: true, status: true, subject: { select: { id: true, name: true } }, client: { select: { id: true, name: true } } } },
       }
     });
 

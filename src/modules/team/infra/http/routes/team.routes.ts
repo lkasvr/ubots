@@ -13,7 +13,8 @@ teamsRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      name: Joi.string().valid('CARTÕES', 'EMPRÉSTIMOS', 'OUTROS ASSUNTOS').required()
+      name: Joi.string().required(),
+      subject: Joi.string().required(),
     },
   }),
   teamController.create,
