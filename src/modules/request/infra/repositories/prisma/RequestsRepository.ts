@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import IRequestsRepository, { ICreateRequestRepositoryMethod } from "@modules/request/domain/repositories/IRequestsRepository";
 import { IUpdateRequest } from '@modules/request/domain/models/IUpdateRequest';
 
-export default class ClientsRepository implements IRequestsRepository {
+export default class RequestsRepository implements IRequestsRepository {
   private ormRepository: PrismaClient;
 
   constructor() {

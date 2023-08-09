@@ -4,11 +4,14 @@ import IRequestsRepository from '../domain/repositories/IRequestsRepository';
 import ShowTeamService from '@modules/team/services/ShowTeamService';
 import AppError from '@shared/errors/AppError';
 import { ITeamFindByName } from '@modules/team/domain/repositories/ITeamsRepository';
+import RequestsRepository from '../infra/repositories/prisma/RequestsRepository';
 
 export default class CreateRequestService {
-  constructor(
-    private requestsRepository: IRequestsRepository,
-  ) { }
+  private requestsRepository: IRequestsRepository;
+
+  constructor() {
+    this.requestsRepository = new RequestsRepository();
+  }
 
   public async execute({ subject, clientId }: ICreateRequest): Promise<Request> {
     const showTeam = new ShowTeamService();

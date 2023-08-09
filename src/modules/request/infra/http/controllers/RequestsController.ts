@@ -9,7 +9,7 @@ import DeleteRequestService from '@modules/request/services/DeleteRequestService
 export default class RequestsController {
   public async index(req: Request, res: Response): Promise<Response> {
 
-    const listRequests = new ListRequestService(new RequestsRepository);
+    const listRequests = new ListRequestService();
 
     const requests = await listRequests.execute();
 
@@ -22,7 +22,7 @@ export default class RequestsController {
       clientId,
     } = req.body;
 
-    const createRequest = new CreateRequestService(new RequestsRepository);
+    const createRequest = new CreateRequestService();
 
     const request = await createRequest.execute({
       subject,
@@ -35,7 +35,7 @@ export default class RequestsController {
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
 
-    const deleteRequest = new DeleteRequestService(new RequestsRepository);
+    const deleteRequest = new DeleteRequestService();
 
     const deletedRequest = await deleteRequest.execute(id);
 

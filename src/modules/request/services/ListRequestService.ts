@@ -1,10 +1,13 @@
 import { Request } from '@prisma/client';
 import IRequestsRepository from '../domain/repositories/IRequestsRepository';
+import RequestsRepository from '../infra/repositories/prisma/RequestsRepository';
 
 export default class ListRequestService {
-  constructor(
-    private requestsRepository: IRequestsRepository,
-  ) { }
+  private requestsRepository: IRequestsRepository;
+
+  constructor() {
+    this.requestsRepository = new RequestsRepository();
+  }
 
   public async execute(): Promise<Request[] | null> {
 
