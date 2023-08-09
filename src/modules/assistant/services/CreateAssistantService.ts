@@ -23,6 +23,7 @@ export default class CreateAssistantService {
       return assistant;
     } catch (error) {
       if (error instanceof AppError) return error;
+      console.error(error);
 
       return null;
     }
