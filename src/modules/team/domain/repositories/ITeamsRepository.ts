@@ -16,12 +16,14 @@ export interface ITeamCreate extends Team {
 }
 
 export interface ITeamFindById extends Team {
+  subject: { id: number; name: string; } | null;
   assistants: {
     id: number;
   }[];
 }
 
 export interface ITeamFindByName extends Team {
+  subject: { id: number; name: string; } | null;
   assistants: {
     id: number;
     name: string;
@@ -39,8 +41,8 @@ export interface ITeamFindBySubject extends Team {
 
 export default interface ITeamsRepository {
   create: (data: ICreateTeam) => Promise<ITeamCreate>;
-  find: () => Promise<ITeamFind[] | null>;
   findById: (teamId: number) => Promise<ITeamFindById | null>;
+  find: () => Promise<ITeamFind[] | null>;
   findByName: (name: string) => Promise<ITeamFindByName | null>;
   findBySubject: (subject: string) => Promise<ITeamFindBySubject[] | null>;
   update: (data: IUpdateTeam) => Promise<Team>;

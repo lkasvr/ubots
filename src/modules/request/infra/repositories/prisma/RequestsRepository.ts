@@ -9,7 +9,6 @@ export default class RequestsRepository implements IRequestsRepository {
   }
 
   public async create({ subject, status, clientId, teamId, assistantId }: IRequestCreate) {
-
     const request = this.ormRepository.request.create({
       data: {
         subject: {
