@@ -21,6 +21,28 @@ clientsRouter.post(
   clientController.create,
 );
 
+clientsRouter.get(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required()
+    },
+  }),
+  clientController.show,
+);
+
+clientsRouter.put(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      clientId: Joi.number().required(),
+      name: Joi.string(),
+      email: Joi.string().email()
+    },
+  }),
+  clientController.update,
+);
+
 clientsRouter.delete(
   '/:id',
   celebrate({
