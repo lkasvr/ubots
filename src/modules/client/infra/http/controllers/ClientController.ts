@@ -9,7 +9,7 @@ import DeleteClientService from '@modules/client/services/DeleteClientService';
 export default class ClientController {
   public async index(req: Request, res: Response): Promise<Response> {
 
-    const listClients = new ListClientService(new ClientsRepository);
+    const listClients = new ListClientService();
 
     const clients = await listClients.execute();
 
@@ -19,7 +19,7 @@ export default class ClientController {
   public async create(req: Request, res: Response): Promise<Response> {
     const { name, email } = req.body;
 
-    const createClient = new CreateClientService(new ClientsRepository);
+    const createClient = new CreateClientService();
 
     const client = await createClient.execute({
       name,
@@ -32,7 +32,7 @@ export default class ClientController {
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
 
-    const deleteClient = new DeleteClientService(new ClientsRepository);
+    const deleteClient = new DeleteClientService();
 
     const deletedClient = await deleteClient.execute(Number(id));
 
