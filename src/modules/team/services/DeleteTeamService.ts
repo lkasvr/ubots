@@ -18,12 +18,6 @@ export default class DeleteTeamService {
 
     if (!team) throw new AppError('Time inexistente.');
 
-    if (team.assistants.length > 0) {
-      team.assistants.forEach((assistant) => {
-
-      });
-    }
-
     const deletedTeam = await this.teamsRepository.delete(teamId);
 
     return deletedTeam;

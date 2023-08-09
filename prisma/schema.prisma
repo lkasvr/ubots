@@ -20,8 +20,8 @@ model Client {
 model Assistant {
   id       Int       @id @default(autoincrement())
   name     String
-  team     Team      @relation(fields: [teamId], references: [id])
-  teamId   Int
+  team     Team?     @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  teamId   Int?
   requests Request[]
 }
 
