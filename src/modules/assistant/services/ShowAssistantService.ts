@@ -1,5 +1,4 @@
-import { Assistant } from '@prisma/client';
-import IAssistantsRepository from '../domain/repositories/IAssistantsRepository';
+import IAssistantsRepository, { IAssistantFindById } from '../domain/repositories/IAssistantsRepository';
 import AssistantsRepository from '../infra/repositories/prisma/AssistantsRepository';
 import AppError from '@shared/errors/AppError';
 
@@ -9,7 +8,7 @@ export default class ShowAssistantService {
     this.assistantsRepository = new AssistantsRepository();
   }
 
-  public async execute(assistandId: number): Promise<Assistant | AppError | null> {
+  public async execute(assistandId: number): Promise<IAssistantFindById | AppError | null> {
     try {
       const assistant = await this.assistantsRepository.findById(assistandId);
 

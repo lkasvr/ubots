@@ -4,6 +4,7 @@ import RequestsRepository from '../infra/repositories/prisma/RequestsRepository'
 import AppError from '@shared/errors/AppError';
 import { IUpdateRequest } from '../domain/models/IUpdateRequest';
 import ShowRequestService from './ShowRequestService';
+import ShowAssistantService from '@modules/assistant/services/ShowAssistantService';
 
 export default class UpdateRequestService {
   private requestsRepository: IRequestsRepository;
@@ -22,9 +23,28 @@ export default class UpdateRequestService {
 
       if (request instanceof AppError) throw new AppError(request.message);
 
-
-
       if (assistandId) {
+        const showAssistantService = new ShowAssistantService();
+
+        const assistant = await showAssistantService.execute(assistandId);
+
+        if (assistant instanceof AppError) throw new AppError(assistant.message);
+
+        if (!assistant) throw new AppError('Erro inesperado, confira o log do servidor.');
+
+        if (!assistant.team) throw new AppError('Assistente ainda sem um time designado.');
+
+        if (assistant.team && assistant.teamId !== request.teamId)
+          throw new AppError('Assistente não pode ser atribuído para esta solicitação porque pertence a um time distinto, ou porque a solicitação ainda não foi encaminhada para nenhum time de atendimento.');
+
+        if (assistant.requests) {
+          const assignedRequests = assistant.requests.filter((request) => {
+            return request.status === 'ADERIDO';
+          });
+
+          if (assignedRequests.length >= 3) throw new AppError('Assistente atingiu o limite de solicitações designadas.');
+        }
+
         if (request.assistantId && assistandId !== request.assistantId) {
           await this.requestsRepository.update({ requestId, disconnect: true });
           const updatedRequest = await this.requestsRepository.update({ requestId, assistandId, status: 'ADERIDO', disconnect: false });
