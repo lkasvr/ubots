@@ -32,6 +32,18 @@ requestsRouter.get(
   requestController.show,
 );
 
+requestsRouter.put(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      requestId: Joi.number().required(),
+      assistandId: Joi.number(),
+      status: Joi.string(),
+    },
+  }),
+  requestController.show,
+);
+
 requestsRouter.delete(
   '/:id',
   celebrate({
