@@ -10,13 +10,13 @@ export default class ShowTeamBySubjectService {
     this.teamsRepository = new TeamsRepository();
   }
 
-  public async execute(subject: string): Promise<ITeamFindBySubject[] | AppError> {
+  public async execute(subject: string): Promise<ITeamFindBySubject | AppError> {
     try {
       const team = await this.teamsRepository.findBySubject(subject);
 
       if (!team) throw new AppError('Time não encontrado.');
 
-      return team;
+      return team[0];
     } catch (error) {
       if (error instanceof AppError) return error;
       console.error(error);

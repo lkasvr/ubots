@@ -55,7 +55,7 @@ export default class TeamsRepository implements ITeamsRepository {
 
   public async findBySubject(subject: string) {
     const team = await this.ormRepository.team.findMany({
-      where: { subject: { name: subject } },
+      where: { subject: { name: { equals: subject } } },
       include: {
         assistants: { select: { id: true, name: true, requests: { select: { id: true, status: true } } } },
       }

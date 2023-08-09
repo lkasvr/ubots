@@ -19,6 +19,7 @@ export default class RequestsController {
   public async create(req: Request, res: Response): Promise<Response> {
     const {
       subject,
+      desc,
       clientId,
     } = req.body;
 
@@ -26,6 +27,7 @@ export default class RequestsController {
 
     const request = await createRequest.execute({
       subject,
+      desc,
       clientId,
     });
 

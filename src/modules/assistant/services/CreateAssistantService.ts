@@ -16,7 +16,7 @@ export default class CreateAssistantService {
       const showTeamByIdService = new ShowTeamByIdService();
       const team = await showTeamByIdService.execute(teamId);
 
-      if (!team) throw new AppError('Não é possível criar um Assistente sem um time válido ou existente.');
+      if (team instanceof AppError) return team;
 
       const assistant = await this.assistantsRepository.create({ name, teamId });
 

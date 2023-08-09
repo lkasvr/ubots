@@ -8,13 +8,14 @@ export default class RequestsRepository implements IRequestsRepository {
     this.ormRepository = new PrismaClient();
   }
 
-  public async create({ subject, status, clientId, teamId, assistantId }: IRequestCreate) {
+  public async create({ subject, status, desc, clientId, teamId, assistantId }: IRequestCreate) {
     const request = this.ormRepository.request.create({
       data: {
         subject: {
           connect: { name: subject }
         },
         status,
+        desc,
         client: {
           connect: { id: clientId },
         },

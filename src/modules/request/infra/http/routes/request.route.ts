@@ -14,6 +14,7 @@ requestsRouter.post(
   celebrate({
     [Segments.BODY]: {
       subject: Joi.string().required(),
+      desc: Joi.string().required(),
       clientId: Joi.number().required(),
     },
   }),
