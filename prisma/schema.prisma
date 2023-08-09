@@ -11,18 +11,22 @@ datasource db {
 }
 
 model Client {
-  id       String    @id @default(uuid())
-  name     String
-  email    String    @unique
-  requests Request[]
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  requests  Request[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Assistant {
-  id       String    @id @default(uuid())
-  name     String
-  team     Team?     @relation(fields: [teamId], references: [id], onDelete: SetNull)
-  teamId   String?
-  requests Request[]
+  id        String    @id @default(uuid())
+  name      String
+  team      Team?     @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  teamId    String?
+  requests  Request[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Team {
@@ -31,6 +35,8 @@ model Team {
   subject    Subject?
   assistants Assistant[]
   requests   Request[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
 
 model Request {
@@ -45,13 +51,16 @@ model Request {
   teamId      String?
   assistant   Assistant? @relation(fields: [assistantId], references: [id], onDelete: SetNull)
   assistantId String?
-  creatAt     DateTime   @default(now())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model Subject {
-  id      String    @id @default(uuid())
-  name    String    @unique
-  Request Request[]
-  Team    Team      @relation(fields: [teamId], references: [id], onDelete: NoAction)
-  teamId  String    @unique
+  id        String    @id @default(uuid())
+  name      String    @unique
+  Request   Request[]
+  Team      Team      @relation(fields: [teamId], references: [id], onDelete: NoAction)
+  teamId    String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
