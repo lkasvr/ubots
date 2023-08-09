@@ -1,18 +1,17 @@
 import { Assistant } from '@prisma/client';
-import { ICreateAssistant } from '../domain/models/ICreateAssistant';
 import IAssistantsRepository from '../domain/repositories/IAssistantsRepository';
 import AssistantsRepository from '../infra/repositories/prisma/AssistantsRepository';
 
-export default class CreateAssistantService {
+export default class UpdateRelationWithTeamService {
   private assistantsRepository: IAssistantsRepository;
   constructor() {
     this.assistantsRepository = new AssistantsRepository();
   }
 
-  public async execute({ name, teamId }: ICreateAssistant): Promise<Assistant | null> {
+  public async execute(): Promise<Assistant[] | null> {
 
-    const assistant = await this.assistantsRepository.create({ name, teamId });
+    const assistants = await this.assistantsRepository.find();
 
-    return assistant;
+    return assistants;
   }
 }

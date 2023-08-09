@@ -1,10 +1,12 @@
 import { Assistant } from '@prisma/client';
 import IAssistantsRepository from '../domain/repositories/IAssistantsRepository';
+import AssistantsRepository from '../infra/repositories/prisma/AssistantsRepository';
 
 export default class DeleteAssistantService {
-  constructor(
-    private assistantsRepository: IAssistantsRepository,
-  ) { }
+  private assistantsRepository: IAssistantsRepository;
+  constructor() {
+    this.assistantsRepository = new AssistantsRepository();
+  }
 
   public async execute(assistantId: number): Promise<Assistant | null> {
 

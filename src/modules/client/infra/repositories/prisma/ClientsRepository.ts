@@ -11,18 +11,12 @@ export default class ClientsRepository implements IClientsRepository {
     this.ormRepository = new PrismaClient();
   }
 
-  public async create({ name, email, requestsIds }: ICreateClient) {
+  public async create({ name, email }: ICreateClient) {
     const client = await this.ormRepository.client.create({
       data: {
         name,
         email,
-        requests: {
-          connect: requestsIds
-        }
       },
-      include: {
-        requests: { select: { id: true, status: true, subject: true, client: { select: { id: true, name: true } } } }
-      }
     });
 
     return client;

@@ -22,7 +22,21 @@ export default class TeamsRepository implements ITeamsRepository {
 
   public async findById(teamId: number) {
     const team = await this.ormRepository.team.findUnique({
-      where: { id: teamId }
+      where: { id: teamId },
+      include: {
+        assistants: { select: { id: true } }
+      }
+    });
+
+    return team;
+  };
+
+  public async findByName(name: string) {
+    const team = await this.ormRepository.team.findUnique({
+      where: { name },
+      include: {
+        assistants: { select: { id: true, name: true, requests: { select: { id: true } } } },
+      }
     });
 
     return team;

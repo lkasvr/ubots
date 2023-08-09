@@ -7,9 +7,9 @@ export default class CreateClientService {
     private clientsRepository: IClientsRepository,
   ) { }
 
-  public async execute({ name, email, requestsIds }: ICreateClient): Promise<Client> {
+  public async execute({ name, email }: ICreateClient): Promise<Client> {
 
-    const client = await this.clientsRepository.create({ name, email, requestsIds });
+    const client = await this.clientsRepository.create({ name, email });
 
     return client;
   }

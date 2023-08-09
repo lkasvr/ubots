@@ -1,6 +1,5 @@
 import { Client } from "@prisma/client";
 import { ICreateClient } from "../models/ICreateClient";
-import { IDeleteClient } from "../models/IDeleteCLient";
 import { IUpdateClient } from "../models/IUpdateClient";
 import { IReadClient } from "../models/IReadClient";
 
@@ -10,5 +9,5 @@ export default interface ClientsRepository {
   findByEmail: (email: string) => Promise<Client | null>;
   find: () => Promise<Client[] | null>;
   update: (data: IUpdateClient) => Promise<Client>;
-  delete: (data: IDeleteClient) => Promise<Client>;
+  delete: (clientId: number) => Promise<Client>;
 }

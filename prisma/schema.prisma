@@ -27,7 +27,7 @@ model Assistant {
 
 model Team {
   id         Int         @id @default(autoincrement())
-  name       String
+  name       String      @unique
   assistants Assistant[]
   requests   Request[]
 }
@@ -38,7 +38,7 @@ model Request {
   status      String
   client      Client     @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId    Int
-  team        Team?      @relation(fields: [teamId], references: [id])
+  team        Team?      @relation(fields: [teamId], references: [id], onDelete: SetNull)
   teamId      Int?
   assistant   Assistant? @relation(fields: [assistantId], references: [id])
   assistantId Int?

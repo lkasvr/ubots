@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
+// Repository
+import RequestsRepository from '../../repositories/prisma/RequestsRepository';
 // Services
 import CreateRequestService from '@modules/request/services/CreateRequestService';
 import ListRequestService from '@modules/request/services/ListRequestService';
-import RequestsRepository from '../../repositories/prisma/RequestsRepository';
+import DeleteRequestService from '@modules/request/services/DeleteRequestService';
 
 export default class RequestsController {
-  private requestsRepository: RequestsRepository = new RequestsRepository();
-
   public async index(req: Request, res: Response): Promise<Response> {
 
-    const listRequests = new ListRequestService(this.requestsRepository);
+    const listRequests = new ListRequestService(new RequestsRepository);
 
     const requests = await listRequests.execute();
 
@@ -18,23 +18,27 @@ export default class RequestsController {
 
   public async create(req: Request, res: Response): Promise<Response> {
     const {
-      status,
       subject,
       clientId,
-      teamId,
-      assistantId
     } = req.body;
 
-    const createRequest = new CreateRequestService(this.requestsRepository);
+    const createRequest = new CreateRequestService(new RequestsRepository);
 
     const request = await createRequest.execute({
-      status,
       subject,
       clientId,
-      teamId,
-      assistantId
     });
 
     return res.json(request);
+  }
+
+  public async delete(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+
+    const deleteRequest = new DeleteRequestService(new RequestsRepository);
+
+    const deletedRequest = await deleteRequest.execute(id);
+
+    return res.json(deletedRequest);
   }
 }

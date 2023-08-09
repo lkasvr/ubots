@@ -1,11 +1,5 @@
 import { Client } from '@prisma/client';
 import IClientsRepository from '../domain/repositories/IClientsRepository';
-//import { ICustomerPaginate } from '../domain/models/';
-
-// type SearchParams = {
-//   page: number;
-//   limit: number;
-// };
 
 export default class ListClientService {
   constructor(

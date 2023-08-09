@@ -17,14 +17,13 @@ export default class ClientController {
   }
 
   public async create(req: Request, res: Response): Promise<Response> {
-    const { name, email, requestsIds } = req.body;
+    const { name, email } = req.body;
 
     const createClient = new CreateClientService(new ClientsRepository);
 
     const client = await createClient.execute({
       name,
       email,
-      requestsIds
     });
 
     return res.json(client);

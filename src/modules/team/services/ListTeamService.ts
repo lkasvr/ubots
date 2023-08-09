@@ -1,11 +1,5 @@
 import { Team } from '@prisma/client';
 import ITeamsRepository from '../domain/repositories/ITeamsRepository';
-//import { ICustomerPaginate } from '../domain/models/';
-
-// type SearchParams = {
-//   page: number;
-//   limit: number;
-// };
 
 export default class ListTeamService {
   constructor(

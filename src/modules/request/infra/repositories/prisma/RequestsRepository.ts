@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import IRequestsRepository from "@modules/request/domain/repositories/IRequestsRepository";
-import { ICreateRequest } from "@modules/request/domain/models/ICreateRequest";
+import IRequestsRepository, { ICreateRequestRepositoryMethod } from "@modules/request/domain/repositories/IRequestsRepository";
 import { IUpdateRequest } from '@modules/request/domain/models/IUpdateRequest';
 
 export default class ClientsRepository implements IRequestsRepository {
@@ -10,7 +9,8 @@ export default class ClientsRepository implements IRequestsRepository {
     this.ormRepository = new PrismaClient();
   }
 
-  public async create({ subject, status, clientId, teamId }: ICreateRequest) {
+  public async create({ subject, status, clientId, teamId, assistantId }: ICreateRequestRepositoryMethod) {
+
     const request = this.ormRepository.request.create({
       data: {
         subject,
@@ -21,9 +21,11 @@ export default class ClientsRepository implements IRequestsRepository {
         team: {
           connect: { id: teamId }
         },
-        assistant: {
-          connect: { id: teamId }
-        }
+        assistant: assistantId
+          ? {
+            connect: { id: assistantId }
+          }
+          : undefined
       }
     });
 
@@ -83,9 +85,9 @@ export default class ClientsRepository implements IRequestsRepository {
   public async find() {
     const requests = await this.ormRepository.request.findMany({
       include: {
-        client: true,
-        team: true,
-      }
+        client: { select: { name: true, email: true } },
+        team: { select: { name: true } },
+      },
     });
 
     return requests;
