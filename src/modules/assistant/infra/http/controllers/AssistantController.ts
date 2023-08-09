@@ -35,7 +35,7 @@ export default class AssistantController {
 
     const showAssistantService = new ShowAssistantService();
 
-    const assistant = await showAssistantService.execute(Number(id));
+    const assistant = await showAssistantService.execute(id);
 
     return res.json(assistant);
   }
@@ -45,7 +45,7 @@ export default class AssistantController {
 
     const updateAssistantService = new UpdateAssistantService();
 
-    const assistant = await updateAssistantService.execute({ assistantId: Number(assistantId), data: { name } });
+    const assistant = await updateAssistantService.execute({ assistantId, data: { name } });
 
     return res.json(assistant);
   }
@@ -55,7 +55,7 @@ export default class AssistantController {
 
     const deleteAssistant = new DeleteAssistantService();
 
-    const assistant = await deleteAssistant.execute(Number(id));
+    const assistant = await deleteAssistant.execute(id);
 
     return res.json(assistant);
   }

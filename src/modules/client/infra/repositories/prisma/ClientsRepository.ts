@@ -21,7 +21,7 @@ export default class ClientsRepository implements IClientsRepository {
     return client;
   }
 
-  public async findById(id: number) {
+  public async findById(id: string) {
     const client = await this.ormRepository.client.findUnique({
       where: { id }
     });
@@ -54,7 +54,7 @@ export default class ClientsRepository implements IClientsRepository {
     return updatedClient;
   }
 
-  public async delete(clientId: number) {
+  public async delete(clientId: string) {
     const deletedClient = await this.ormRepository.client.delete({
       where: { id: clientId },
     });

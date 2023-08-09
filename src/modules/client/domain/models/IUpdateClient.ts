@@ -1,4 +1,4 @@
 export interface IUpdateClient {
-  clientId: number;
+  clientId: string;
   data: { name: string; email: string; };
 }

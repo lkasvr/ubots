@@ -15,7 +15,7 @@ requestsRouter.post(
     [Segments.BODY]: {
       subject: Joi.string().required(),
       desc: Joi.string().required(),
-      clientId: Joi.number().required(),
+      clientId: Joi.string().uuid().required(),
     },
   }),
   requestController.create,
@@ -25,7 +25,7 @@ requestsRouter.get(
   '/:id',
   celebrate({
     [Segments.PARAMS]: {
-      id: Joi.number().required(),
+      id: Joi.string().uuid().required(),
     },
   }),
   requestController.show,
@@ -35,8 +35,8 @@ requestsRouter.put(
   '/',
   celebrate({
     [Segments.BODY]: {
-      requestId: Joi.number().required(),
-      assistantId: Joi.number(),
+      requestId: Joi.string().uuid().required(),
+      assistantId: Joi.string().uuid(),
       status: Joi.string(),
     },
   }),
@@ -47,7 +47,7 @@ requestsRouter.delete(
   '/:id',
   celebrate({
     [Segments.PARAMS]: {
-      id: Joi.number().required(),
+      id: Joi.string().uuid().required(),
     }
   }),
   requestController.delete

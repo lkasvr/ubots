@@ -10,7 +10,7 @@ export default class DeleteAssistantService {
     this.assistantsRepository = new AssistantsRepository();
   }
 
-  public async execute(assistantId: number): Promise<Assistant | AppError> {
+  public async execute(assistantId: string): Promise<Assistant | AppError> {
     try {
       const assistant = await this.assistantsRepository.findById(assistantId);
 

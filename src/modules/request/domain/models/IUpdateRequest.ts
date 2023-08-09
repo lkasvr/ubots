@@ -1,5 +1,5 @@
 export interface IUpdateRequest {
-  requestId: number;
+  requestId: string;
   status?: string;
-  assistantId?: number;
+  assistantId?: string;
 }

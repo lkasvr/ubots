@@ -39,7 +39,7 @@ export default class RequestsController {
 
     const showRequest = new ShowRequestService();
 
-    const request = await showRequest.execute(Number(id));
+    const request = await showRequest.execute(id);
 
     return res.json(request);
   }
@@ -49,7 +49,7 @@ export default class RequestsController {
 
     const updateRequestService = new UpdateRequestService();
 
-    const request = await updateRequestService.execute({ requestId: Number(requestId), assistantId: Number(assistantId), status });
+    const request = await updateRequestService.execute({ requestId, assistantId, status });
 
     return res.json(request);
   }
@@ -59,7 +59,7 @@ export default class RequestsController {
 
     const deleteRequest = new DeleteRequestService();
 
-    const deletedRequest = await deleteRequest.execute(Number(id));
+    const deletedRequest = await deleteRequest.execute(id);
 
     return res.json(deletedRequest);
   }

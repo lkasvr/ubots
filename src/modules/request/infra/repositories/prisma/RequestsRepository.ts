@@ -33,7 +33,7 @@ export default class RequestsRepository implements IRequestsRepository {
     return request;
   }
 
-  public async findById(requestId: number) {
+  public async findById(requestId: string) {
     const request = await this.ormRepository.request.findUnique({
       where: { id: requestId },
       include: {
@@ -58,7 +58,7 @@ export default class RequestsRepository implements IRequestsRepository {
     return request;
   };
 
-  public async findByAssistant(assistantId: number) {
+  public async findByAssistant(assistantId: string) {
     const request = await this.ormRepository.request.findMany({
       where: { assistantId },
       include: {
@@ -101,7 +101,7 @@ export default class RequestsRepository implements IRequestsRepository {
     return requestUpdated;
   };
 
-  public async delete(requestId: number) {
+  public async delete(requestId: string) {
     const deletedRequest = await this.ormRepository.request.delete({
       where: { id: requestId },
       include: {

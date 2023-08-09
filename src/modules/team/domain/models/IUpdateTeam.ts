@@ -1,5 +1,5 @@
 export interface IUpdateTeam {
-  teamId: number;
+  teamId: string;
   data: {
     name: string;
   }

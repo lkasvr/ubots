@@ -11,7 +11,7 @@ export default class DeleteRequestService {
     this.requestsRepository = new RequestsRepository();
   }
 
-  public async execute(requestId: number): Promise<Request | AppError> {
+  public async execute(requestId: string): Promise<Request | AppError> {
     try {
       const request = await this.requestsRepository.findById(requestId);
 

@@ -10,7 +10,7 @@ export default class ShowTeamByIdService {
     this.teamsRepository = new TeamsRepository();
   }
 
-  public async execute(teamId: number): Promise<ITeamFindById | AppError> {
+  public async execute(teamId: string): Promise<ITeamFindById | AppError> {
     try {
       const team = await this.teamsRepository.findById(teamId);
 

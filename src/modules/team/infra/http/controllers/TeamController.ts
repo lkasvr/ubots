@@ -35,7 +35,7 @@ export default class TeamController {
 
     const showTeam = new ShowTeamByIdService();
 
-    const team = await showTeam.execute(Number(id));
+    const team = await showTeam.execute(id);
 
     return res.json(team);
   }
@@ -45,7 +45,7 @@ export default class TeamController {
 
     const deleteTeam = new DeleteTeamService();
 
-    const team = await deleteTeam.execute(Number(id));
+    const team = await deleteTeam.execute(id);
 
     return res.json(team);
   }

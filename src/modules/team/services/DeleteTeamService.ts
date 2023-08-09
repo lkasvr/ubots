@@ -10,7 +10,7 @@ export default class DeleteTeamService {
     this.teamsRepository = new TeamsRepository();
   }
 
-  public async execute(teamId: number): Promise<Team | AppError> {
+  public async execute(teamId: string): Promise<Team | AppError> {
     try {
       const team = await this.teamsRepository.findById(teamId);
 

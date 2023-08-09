@@ -10,7 +10,7 @@ export default class ShowClientService {
     this.clientsRepository = new ClientsRepository();
   }
 
-  public async execute(clientId: number): Promise<Client | AppError> {
+  public async execute(clientId: string): Promise<Client | AppError> {
     try {
       const client = await this.clientsRepository.findById(clientId);
 

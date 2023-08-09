@@ -24,7 +24,7 @@ teamsRouter.get(
   '/:id',
   celebrate({
     [Segments.PARAMS]: {
-      id: Joi.number().required()
+      id: Joi.string().uuid().required()
     },
   }),
   teamController.show,
@@ -34,7 +34,7 @@ teamsRouter.delete(
   '/:id',
   celebrate({
     [Segments.PARAMS]: {
-      id: Joi.number().required()
+      id: Joi.string().uuid().required()
     },
   }),
   teamController.delete,

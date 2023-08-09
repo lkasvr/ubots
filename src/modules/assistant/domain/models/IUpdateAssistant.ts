@@ -1,4 +1,4 @@
 export interface IUpdateAssistant {
-  assistantId: number;
+  assistantId: string;
   data: { name: string; }
 }

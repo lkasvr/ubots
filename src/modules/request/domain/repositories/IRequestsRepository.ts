@@ -4,15 +4,15 @@ import { IUpdateRequest } from "../models/IUpdateRequest";
 
 export interface IRequestCreate extends ICreateRequest {
   status: string;
-  teamId: number;
-  assistantId?: number;
+  teamId: string;
+  assistantId?: string;
 }
 
 export interface IRequestFindById extends Request {
   team: { name: string; } | null;
   assistant: {
     name: string;
-    requests: { id: number; }[]
+    requests: { id: string; }[]
   } | null;
 }
 
@@ -42,10 +42,10 @@ export interface IRequestDelete extends Request {
 
 export default interface RequestsRepository {
   create: (data: IRequestCreate) => Promise<Request>;
-  findById: (requestId: number) => Promise<IRequestFindById | null>;
+  findById: (requestId: string) => Promise<IRequestFindById | null>;
   findByStatus: (status: string) => Promise<IRequestFindByStatus[] | null>;
-  findByAssistant: (assistantId: number) => Promise<IRequestFindByAssistant[] | null>;
+  findByAssistant: (assistantId: string) => Promise<IRequestFindByAssistant[] | null>;
   find: () => Promise<IRequestFind[] | null>;
   update: (data: IRequestUpdate) => Promise<Request>;
-  delete: (requestId: number) => Promise<IRequestDelete>;
+  delete: (requestId: string) => Promise<IRequestDelete>;
 }

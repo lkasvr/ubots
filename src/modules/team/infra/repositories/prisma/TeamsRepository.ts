@@ -29,7 +29,7 @@ export default class TeamsRepository implements ITeamsRepository {
     return team;
   }
 
-  public async findById(teamId: number) {
+  public async findById(teamId: string) {
     const team = await this.ormRepository.team.findUnique({
       where: { id: teamId },
       include: {
@@ -85,7 +85,7 @@ export default class TeamsRepository implements ITeamsRepository {
     return updatedTeam;
   };
 
-  public async delete(teamId: number) {
+  public async delete(teamId: string) {
     const deletedTeam = await this.ormRepository.team.delete({
       where: { id: teamId }
     });

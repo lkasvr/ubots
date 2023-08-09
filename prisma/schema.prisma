@@ -11,22 +11,22 @@ datasource db {
 }
 
 model Client {
-  id       Int       @id @default(autoincrement())
+  id       String    @id @default(uuid())
   name     String
   email    String    @unique
   requests Request[]
 }
 
 model Assistant {
-  id       Int       @id @default(autoincrement())
+  id       String    @id @default(uuid())
   name     String
   team     Team?     @relation(fields: [teamId], references: [id], onDelete: SetNull)
-  teamId   Int?
+  teamId   String?
   requests Request[]
 }
 
 model Team {
-  id         Int         @id @default(autoincrement())
+  id         String      @id @default(uuid())
   name       String      @unique
   subject    Subject?
   assistants Assistant[]
@@ -34,23 +34,24 @@ model Team {
 }
 
 model Request {
-  id          Int        @id @default(autoincrement())
+  id          String     @id @default(uuid())
   status      String
   desc        String
-  subjectId   Int
+  subjectId   String
   subject     Subject    @relation(fields: [subjectId], references: [id], onDelete: NoAction)
   client      Client     @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  clientId    Int
+  clientId    String
   team        Team?      @relation(fields: [teamId], references: [id], onDelete: SetNull)
-  teamId      Int?
+  teamId      String?
   assistant   Assistant? @relation(fields: [assistantId], references: [id], onDelete: SetNull)
-  assistantId Int?
+  assistantId String?
+  creatAt     DateTime   @default(now())
 }
 
 model Subject {
-  id      Int       @id @default(autoincrement())
+  id      String    @id @default(uuid())
   name    String    @unique
   Request Request[]
   Team    Team      @relation(fields: [teamId], references: [id], onDelete: NoAction)
-  teamId  Int       @unique
+  teamId  String    @unique
 }

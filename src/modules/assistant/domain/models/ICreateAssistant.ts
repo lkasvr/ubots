@@ -1,4 +1,4 @@
 export interface ICreateAssistant {
   name: string;
-  teamId: number;
+  teamId: string;
 }

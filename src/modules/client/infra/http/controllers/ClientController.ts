@@ -34,7 +34,7 @@ export default class ClientController {
 
     const showClientService = new ShowClientService();
 
-    const client = await showClientService.execute(Number(id));
+    const client = await showClientService.execute(id);
 
     return res.json(client);
   }
@@ -44,7 +44,7 @@ export default class ClientController {
 
     const updateClientService = new UpdateClientService();
 
-    const client = await updateClientService.execute({ clientId: Number(clientId), data: { name, email } });
+    const client = await updateClientService.execute({ clientId, data: { name, email } });
 
     return res.json(client);
   }
@@ -54,7 +54,7 @@ export default class ClientController {
 
     const deleteClient = new DeleteClientService();
 
-    const deletedClient = await deleteClient.execute(Number(id));
+    const deletedClient = await deleteClient.execute(id);
 
     return res.json(deletedClient);
   }
