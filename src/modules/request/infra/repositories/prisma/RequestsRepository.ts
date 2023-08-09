@@ -92,13 +92,13 @@ export default class RequestsRepository implements IRequestsRepository {
     return requests;
   };
 
-  public async update({ requestId, assistandId, status, disconnect }: IRequestUpdate) {
+  public async update({ requestId, assistantId, status, disconnect }: IRequestUpdate) {
     let assistantUpdateData;
 
     if (disconnect) {
       assistantUpdateData = { disconnect };
-    } else if (assistandId) {
-      assistantUpdateData = { connect: { id: assistandId } };
+    } else if (assistantId) {
+      assistantUpdateData = { connect: { id: assistantId } };
     }
 
     const requestUpdated = await this.ormRepository.request.update({

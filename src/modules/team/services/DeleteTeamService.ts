@@ -1,6 +1,5 @@
 import { Team } from '@prisma/client';
 import ITeamsRepository from '../domain/repositories/ITeamsRepository';
-import ShowTeamByIdService from './ShowTeamByIdService';
 import AppError from '@shared/errors/AppError';
 import TeamsRepository from '../infra/repositories/prisma/TeamsRepository';
 
@@ -11,15 +10,20 @@ export default class DeleteTeamService {
     this.teamsRepository = new TeamsRepository();
   }
 
-  public async execute(teamId: number): Promise<Team> {
-    const showTeamByIdService = new ShowTeamByIdService();
+  public async execute(teamId: number): Promise<Team | AppError> {
+    try {
+      const team = await this.teamsRepository.findById(teamId);
 
-    const team = await showTeamByIdService.execute(teamId);
+      if (!team) throw new AppError('Time inexistente.');
 
-    if (!team) throw new AppError('Time inexistente.');
+      const deletedTeam = await this.teamsRepository.delete(teamId);
 
-    const deletedTeam = await this.teamsRepository.delete(teamId);
+      return deletedTeam;
+    } catch (error) {
+      if (error instanceof AppError) return error;
+      console.error(error);
 
-    return deletedTeam;
+      return new AppError(`${error}`);
+    }
   }
 }

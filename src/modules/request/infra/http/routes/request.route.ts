@@ -7,15 +7,13 @@ import { celebrate, Joi, Segments } from 'celebrate';
 const requestsRouter = Router();
 const requestController = new RequestsController();
 
-const validSubjects = ['Problemas com cartão', 'Contratação de Empréstimos', 'Outros Assuntos'];
-
 requestsRouter.get('/', requestController.index);
 
 requestsRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      subject: Joi.string().valid(...validSubjects).required(),
+      subject: Joi.string().required(),
       clientId: Joi.number().required(),
     },
   }),
@@ -37,11 +35,11 @@ requestsRouter.put(
   celebrate({
     [Segments.BODY]: {
       requestId: Joi.number().required(),
-      assistandId: Joi.number(),
+      assistantId: Joi.number(),
       status: Joi.string(),
     },
   }),
-  requestController.show,
+  requestController.update,
 );
 
 requestsRouter.delete(

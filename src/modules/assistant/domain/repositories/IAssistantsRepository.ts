@@ -1,9 +1,9 @@
 import { ICreateAssistant } from '@modules/assistant/domain/models/ICreateAssistant';
-import { Assistant, Team } from '@prisma/client';
+import { Assistant } from '@prisma/client';
 import { IUpdateAssistant } from '../models/IUpdateAssistant';
 
 export interface IAssistantFindById extends Assistant {
-  team: Team | null;
+  team: { name: string; } | null;
   requests: { id: number; status: string; }[] | null;
 }
 

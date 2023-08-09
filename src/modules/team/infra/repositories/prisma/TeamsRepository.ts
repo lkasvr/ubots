@@ -46,7 +46,7 @@ export default class TeamsRepository implements ITeamsRepository {
     const teams = await this.ormRepository.team.findMany({
       include: {
         assistants: { select: { id: true, name: true } },
-        requests: { select: { id: true, status: true, subject: true, client: { select: { id: true, name: true } } } }
+        requests: { select: { id: true, status: true, subject: true, client: { select: { id: true, name: true } }, assistantId: true } }
       }
     });
 

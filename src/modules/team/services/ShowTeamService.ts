@@ -10,7 +10,7 @@ export default class ShowTeamService {
     this.teamsRepository = new TeamsRepository();
   }
 
-  public async execute(teamName: string): Promise<ITeamFindByName | AppError | null> {
+  public async execute(teamName: string): Promise<ITeamFindByName | AppError> {
     try {
       const team = await this.teamsRepository.findByName(teamName);
 
@@ -21,7 +21,7 @@ export default class ShowTeamService {
       if (error instanceof AppError) return error;
       console.error(error);
 
-      return null;
+      return new AppError(`${error}`);
     }
   }
 }

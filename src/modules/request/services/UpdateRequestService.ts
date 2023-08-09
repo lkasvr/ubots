@@ -3,7 +3,6 @@ import IRequestsRepository from '../domain/repositories/IRequestsRepository';
 import RequestsRepository from '../infra/repositories/prisma/RequestsRepository';
 import AppError from '@shared/errors/AppError';
 import { IUpdateRequest } from '../domain/models/IUpdateRequest';
-import ShowRequestService from './ShowRequestService';
 import ShowAssistantService from '@modules/assistant/services/ShowAssistantService';
 
 export default class UpdateRequestService {
@@ -13,24 +12,18 @@ export default class UpdateRequestService {
     this.requestsRepository = new RequestsRepository();
   }
 
-  public async execute({ requestId, assistandId, status }: IUpdateRequest): Promise<Request | AppError | null> {
+  public async execute({ requestId, assistantId, status }: IUpdateRequest): Promise<Request | AppError> {
     try {
-      const showRequestService = new ShowRequestService();
-
-      const request = await showRequestService.execute(requestId);
+      const request = await this.requestsRepository.findById(requestId);
 
       if (!request) throw new AppError('Solicitação não encontrada.');
 
-      if (request instanceof AppError) throw new AppError(request.message);
-
-      if (assistandId) {
+      if (assistantId) {
         const showAssistantService = new ShowAssistantService();
 
-        const assistant = await showAssistantService.execute(assistandId);
+        const assistant = await showAssistantService.execute(assistantId);
 
-        if (assistant instanceof AppError) throw new AppError(assistant.message);
-
-        if (!assistant) throw new AppError('Erro inesperado, confira o log do servidor.');
+        if (assistant instanceof AppError) return assistant;
 
         if (!assistant.team) throw new AppError('Assistente ainda sem um time designado.');
 
@@ -45,29 +38,29 @@ export default class UpdateRequestService {
           if (assignedRequests.length >= 3) throw new AppError('Assistente atingiu o limite de solicitações designadas.');
         }
 
-        if (request.assistantId && assistandId !== request.assistantId) {
+        if (request.assistantId && assistantId !== request.assistantId) {
           await this.requestsRepository.update({ requestId, disconnect: true });
-          const updatedRequest = await this.requestsRepository.update({ requestId, assistandId, status: 'ADERIDO', disconnect: false });
+          const updatedRequest = await this.requestsRepository.update({ requestId, assistantId, status: 'ADERIDO', disconnect: false });
 
           return updatedRequest;
         }
         if (!request.assistantId) {
-          const updatedRequest = await this.requestsRepository.update({ requestId, assistandId, status: 'ADERIDO', disconnect: false });
+          const updatedRequest = await this.requestsRepository.update({ requestId, assistantId, status: 'ADERIDO', disconnect: false });
 
           return updatedRequest;
         };
-      } else if (status !== request.status) {
+      } else if (status && status !== request.status) {
         const updatedRequest = await this.requestsRepository.update({ requestId, status, disconnect: false });
 
         return updatedRequest;
       }
 
-      return null;
+      return new AppError('Não foi possível atualizar a solicitação.');
     } catch (error) {
       if (error instanceof AppError) return error;
       console.error(error);
 
-      return null;
+      return new AppError(`${error}`);
     }
   }
 }

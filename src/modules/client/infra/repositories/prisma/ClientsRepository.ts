@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client'
 import IClientsRepository from "@modules/client/domain/repositories/IClientsRepository";
 import { ICreateClient } from "@modules/client/domain/models/ICreateClient";
 import { IUpdateClient } from '@modules/client/domain/models/IUpdateClient';
-import { IReadClient } from '@modules/client/domain/models/IReadClient';
 
 export default class ClientsRepository implements IClientsRepository {
   private ormRepository: PrismaClient;
@@ -22,9 +21,9 @@ export default class ClientsRepository implements IClientsRepository {
     return client;
   }
 
-  public async findById({ clientId }: IReadClient) {
+  public async findById(id: number) {
     const client = await this.ormRepository.client.findUnique({
-      where: { id: clientId }
+      where: { id }
     });
 
     return client;

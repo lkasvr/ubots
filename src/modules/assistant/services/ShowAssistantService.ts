@@ -8,7 +8,7 @@ export default class ShowAssistantService {
     this.assistantsRepository = new AssistantsRepository();
   }
 
-  public async execute(assistandId: number): Promise<IAssistantFindById | AppError | null> {
+  public async execute(assistandId: number): Promise<IAssistantFindById | AppError> {
     try {
       const assistant = await this.assistantsRepository.findById(assistandId);
 
@@ -19,7 +19,7 @@ export default class ShowAssistantService {
       if (error instanceof AppError) return error;
       console.error(error);
 
-      return null;
+      return new AppError(`${error}`);
     }
   }
 }

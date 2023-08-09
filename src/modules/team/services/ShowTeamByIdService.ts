@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import ITeamsRepository, { ITeamFindById } from '../domain/repositories/ITeamsRepository';
 import TeamsRepository from '../infra/repositories/prisma/TeamsRepository';
 
@@ -9,10 +10,18 @@ export default class ShowTeamByIdService {
     this.teamsRepository = new TeamsRepository();
   }
 
-  public async execute(teamId: number): Promise<ITeamFindById | null> {
+  public async execute(teamId: number): Promise<ITeamFindById | AppError> {
+    try {
+      const team = await this.teamsRepository.findById(teamId);
 
-    const team = await this.teamsRepository.findById(teamId);
+      if (!team) throw new AppError('Time não encontrado.');
 
-    return team;
+      return team;
+    } catch (error) {
+      if (error instanceof AppError) return error;
+      console.error(error);
+
+      return new AppError(`${error}`);
+    }
   }
 }

@@ -9,7 +9,7 @@ export default class ShowRequestService {
     this.requestsRepository = new RequestsRepository();
   }
 
-  public async execute(requestId: number): Promise<IRequestFindById | AppError | null> {
+  public async execute(requestId: number): Promise<IRequestFindById | AppError> {
     try {
       const request = await this.requestsRepository.findById(requestId);
 
@@ -20,7 +20,7 @@ export default class ShowRequestService {
       if (error instanceof AppError) return error;
       console.error(error);
 
-      return null;
+      return new AppError(`${error}`);
     }
   }
 }

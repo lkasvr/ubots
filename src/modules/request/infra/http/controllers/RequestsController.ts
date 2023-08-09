@@ -43,11 +43,11 @@ export default class RequestsController {
   }
 
   public async update(req: Request, res: Response): Promise<Response> {
-    const { requestId, assistandId, status } = req.body;
+    const { requestId, assistantId, status } = req.body;
 
     const updateRequestService = new UpdateRequestService();
 
-    const request = await updateRequestService.execute({ requestId, assistandId, status });
+    const request = await updateRequestService.execute({ requestId: Number(requestId), assistantId: Number(assistantId), status });
 
     return res.json(request);
   }
@@ -57,7 +57,7 @@ export default class RequestsController {
 
     const deleteRequest = new DeleteRequestService();
 
-    const deletedRequest = await deleteRequest.execute(id);
+    const deletedRequest = await deleteRequest.execute(Number(id));
 
     return res.json(deletedRequest);
   }

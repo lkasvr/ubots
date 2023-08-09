@@ -11,7 +11,7 @@ export default class CreateAssistantService {
     this.assistantsRepository = new AssistantsRepository();
   }
 
-  public async execute({ name, teamId }: ICreateAssistant): Promise<Assistant | AppError | null> {
+  public async execute({ name, teamId }: ICreateAssistant): Promise<Assistant | AppError> {
     try {
       const showTeamByIdService = new ShowTeamByIdService();
       const team = await showTeamByIdService.execute(teamId);
@@ -25,7 +25,7 @@ export default class CreateAssistantService {
       if (error instanceof AppError) return error;
       console.error(error);
 
-      return null;
+      return new AppError(`${error}`);
     }
   }
 }

@@ -1,6 +1,7 @@
 import { Assistant } from '@prisma/client';
 import IAssistantsRepository from '../domain/repositories/IAssistantsRepository';
 import AssistantsRepository from '../infra/repositories/prisma/AssistantsRepository';
+import AppError from '@shared/errors/AppError';
 
 export default class DeleteAssistantService {
   private assistantsRepository: IAssistantsRepository;
@@ -8,10 +9,20 @@ export default class DeleteAssistantService {
     this.assistantsRepository = new AssistantsRepository();
   }
 
-  public async execute(assistantId: number): Promise<Assistant | null> {
+  public async execute(assistantId: number): Promise<Assistant | AppError> {
+    try {
+      const assistant = await this.assistantsRepository.findById(assistantId);
 
-    const deletedAssistant = await this.assistantsRepository.delete(assistantId);
+      if (!assistant) throw new AppError('Assistente não encontrado.');
 
-    return deletedAssistant;
+      const deletedAssistant = await this.assistantsRepository.delete(assistantId);
+
+      return deletedAssistant;
+    } catch (error) {
+      if (error instanceof AppError) return error;
+      console.error(error);
+
+      return new AppError(`${error}`);
+    }
   }
 }

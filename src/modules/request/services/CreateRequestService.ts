@@ -13,7 +13,7 @@ export default class CreateRequestService {
     this.requestsRepository = new RequestsRepository();
   }
 
-  public async execute({ subject, clientId }: ICreateRequest): Promise<Request | AppError | null> {
+  public async execute({ subject, clientId }: ICreateRequest): Promise<Request | AppError> {
     try {
       const showTeam = new ShowTeamService();
       let team: ITeamFindByName | AppError | null = null;
@@ -62,7 +62,7 @@ export default class CreateRequestService {
       if (error instanceof AppError) return error;
       console.error(error);
 
-      return null;
+      return new AppError(`${error}`);
     }
   }
 }

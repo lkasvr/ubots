@@ -12,7 +12,7 @@ export default class CreateTeamService {
     this.teamsRepository = new TeamsRepository();
   }
 
-  public async execute({ name }: ICreateTeam): Promise<Team | AppError | null> {
+  public async execute({ name }: ICreateTeam): Promise<Team | AppError> {
     try {
       const showTeamService = new ShowTeamService();
 
@@ -27,7 +27,7 @@ export default class CreateTeamService {
       if (error instanceof AppError) return error;
       console.error(error);
 
-      return null;
+      return new AppError(`${error}`);
     }
   }
 }
