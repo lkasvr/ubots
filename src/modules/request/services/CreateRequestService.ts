@@ -16,7 +16,7 @@ export default class CreateRequestService {
   public async execute({ subject, clientId }: ICreateRequest): Promise<Request | AppError | null> {
     try {
       const showTeam = new ShowTeamService();
-      let team: ITeamFindByName | null = null;
+      let team: ITeamFindByName | AppError | null = null;
 
       switch (subject) {
         case 'Problemas com cartão':
@@ -32,11 +32,17 @@ export default class CreateRequestService {
 
       if (!team) throw new AppError('Time inexistente para tratar do assunto informado.');
 
+      if (team instanceof AppError) throw new AppError(team.message);
+
       let status = '';
       let assistantId = undefined;
       if (team.assistants.length > 0) {
         team.assistants.forEach((assistant) => {
-          if (assistant.requests.length < 3) {
+          const assignedRequests = assistant.requests.filter((request) => {
+            return request.status === 'ADERIDO';
+          });
+
+          if (assignedRequests.length < 3) {
             assistantId = assistant.id;
             status = 'ADERIDO'
           } else { status = 'PENDENTE' };

@@ -6,7 +6,7 @@ export interface ITeamFindByName extends Team {
   assistants: {
     id: number;
     name: string;
-    requests: { id: number; }[]
+    requests: { id: number; status: string; }[]
   }[];
 }
 

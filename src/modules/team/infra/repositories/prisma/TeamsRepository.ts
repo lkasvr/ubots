@@ -35,7 +35,7 @@ export default class TeamsRepository implements ITeamsRepository {
     const team = await this.ormRepository.team.findUnique({
       where: { name },
       include: {
-        assistants: { select: { id: true, name: true, requests: { select: { id: true } } } },
+        assistants: { select: { id: true, name: true, requests: { select: { id: true, status: true } } } },
       }
     });
 
