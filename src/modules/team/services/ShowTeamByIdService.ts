@@ -4,6 +4,7 @@ import TeamsRepository from '../infra/repositories/prisma/TeamsRepository';
 
 export default class ShowTeamByIdService {
   private teamsRepository: ITeamsRepository;
+
   constructor() {
     this.teamsRepository = new TeamsRepository();
   }

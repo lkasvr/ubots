@@ -2,11 +2,14 @@ import { Team } from '@prisma/client';
 import ITeamsRepository from '../domain/repositories/ITeamsRepository';
 import ShowTeamByIdService from './ShowTeamByIdService';
 import AppError from '@shared/errors/AppError';
+import TeamsRepository from '../infra/repositories/prisma/TeamsRepository';
 
 export default class DeleteTeamService {
-  constructor(
-    private teamsRepository: ITeamsRepository,
-  ) { }
+  private teamsRepository: ITeamsRepository;
+
+  constructor() {
+    this.teamsRepository = new TeamsRepository();
+  }
 
   public async execute(teamId: number): Promise<Team> {
     const showTeamByIdService = new ShowTeamByIdService();
