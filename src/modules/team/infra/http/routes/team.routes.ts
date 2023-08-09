@@ -19,6 +19,16 @@ teamsRouter.post(
   teamController.create,
 );
 
+teamsRouter.get(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required()
+    },
+  }),
+  teamController.show,
+);
+
 teamsRouter.delete(
   '/:id',
   celebrate({

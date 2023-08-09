@@ -28,13 +28,14 @@ model Assistant {
 model Team {
   id         Int         @id @default(autoincrement())
   name       String      @unique
+  subject    Subject?
   assistants Assistant[]
   requests   Request[]
 }
 
 model Request {
   id          Int        @id @default(autoincrement())
-  subject     String
+  subject     Subject    @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   status      String
   client      Client     @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId    Int
@@ -42,4 +43,13 @@ model Request {
   teamId      Int?
   assistant   Assistant? @relation(fields: [assistantId], references: [id], onDelete: SetNull)
   assistantId Int?
+  subjectId   Int
+}
+
+model Subject {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  Request Request[]
+  Team    Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId  Int       @unique
 }

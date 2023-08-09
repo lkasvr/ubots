@@ -5,6 +5,7 @@ import TeamsRepository from '../../repositories/prisma/TeamsRepository';
 import CreateTeamService from '@modules/team/services/CreateTeamService';
 import ListTeamService from '@modules/team/services/ListTeamService';
 import DeleteTeamService from '@modules/team/services/DeleteTeamService';
+import ShowTeamByIdService from '@modules/team/services/ShowTeamByIdService';
 
 export default class TeamController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -24,6 +25,16 @@ export default class TeamController {
     const team = await createTeam.execute({
       name
     });
+
+    return res.json(team);
+  }
+
+  public async show(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+
+    const showTeam = new ShowTeamByIdService();
+
+    const team = await showTeam.execute(Number(id));
 
     return res.json(team);
   }
