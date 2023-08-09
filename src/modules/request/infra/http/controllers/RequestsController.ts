@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
-// Repository
-import RequestsRepository from '../../repositories/prisma/RequestsRepository';
 // Services
 import CreateRequestService from '@modules/request/services/CreateRequestService';
 import ListRequestService from '@modules/request/services/ListRequestService';
 import DeleteRequestService from '@modules/request/services/DeleteRequestService';
+import ShowRequestService from '@modules/request/services/ShowRequestService';
 
 export default class RequestsController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -28,6 +27,16 @@ export default class RequestsController {
       subject,
       clientId,
     });
+
+    return res.json(request);
+  }
+
+  public async show(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+
+    const showRequest = new ShowRequestService();
+
+    const request = await showRequest.execute(Number(id));
 
     return res.json(request);
   }
