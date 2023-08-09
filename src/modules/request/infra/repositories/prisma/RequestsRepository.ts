@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import IRequestsRepository, { ICreateRequestRepositoryMethod } from "@modules/request/domain/repositories/IRequestsRepository";
-import { IUpdateRequest } from '@modules/request/domain/models/IUpdateRequest';
+import IRequestsRepository, { IRequestCreate, IRequestUpdate } from "@modules/request/domain/repositories/IRequestsRepository";
 
 export default class RequestsRepository implements IRequestsRepository {
   private ormRepository: PrismaClient;
@@ -9,7 +8,7 @@ export default class RequestsRepository implements IRequestsRepository {
     this.ormRepository = new PrismaClient();
   }
 
-  public async create({ subject, status, clientId, teamId, assistantId }: ICreateRequestRepositoryMethod) {
+  public async create({ subject, status, clientId, teamId, assistantId }: IRequestCreate) {
 
     const request = this.ormRepository.request.create({
       data: {
@@ -36,8 +35,8 @@ export default class RequestsRepository implements IRequestsRepository {
     const request = await this.ormRepository.request.findUnique({
       where: { id: requestId },
       include: {
-        client: true,
-        assistant: true,
+        team: { select: { name: true } },
+        assistant: { select: { name: true, requests: { select: { id: true } } } },
       }
     });
 
@@ -93,10 +92,21 @@ export default class RequestsRepository implements IRequestsRepository {
     return requests;
   };
 
-  public async update({ requestId, data }: IUpdateRequest) {
+  public async update({ requestId, assistandId, status, disconnect }: IRequestUpdate) {
+    let assistantUpdateData;
+
+    if (disconnect) {
+      assistantUpdateData = { disconnect };
+    } else if (assistandId) {
+      assistantUpdateData = { connect: { id: assistandId } };
+    }
+
     const requestUpdated = await this.ormRepository.request.update({
       where: { id: requestId },
-      data,
+      data: {
+        status,
+        assistant: assistantUpdateData,
+      }
     });
 
     return requestUpdated;
