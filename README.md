@@ -7,7 +7,7 @@ Desafio técnico, desenvolvimento de uma API Rest como solução para uma fintec
 
 </br>
 
-### Link do Deploy na Vercel:
+![Diagrama UML - Modelos API Ubots-Invext](./public/UML.png)
 
 </br>
 
