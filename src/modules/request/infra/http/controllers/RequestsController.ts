@@ -5,6 +5,7 @@ import ListRequestService from '@modules/request/services/ListRequestService';
 import DeleteRequestService from '@modules/request/services/DeleteRequestService';
 import ShowRequestService from '@modules/request/services/ShowRequestService';
 import UpdateRequestService from '@modules/request/services/UpdateRequestService';
+import ShowRequestByStatusService from '@modules/request/services/ShowRequestByStatusService';
 
 export default class RequestsController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -40,6 +41,16 @@ export default class RequestsController {
     const showRequest = new ShowRequestService();
 
     const request = await showRequest.execute(id);
+
+    return res.json(request);
+  }
+
+  public async showByStatus(req: Request, res: Response): Promise<Response> {
+    const { status } = req.params;
+
+    const showRequest = new ShowRequestByStatusService();
+
+    const request = await showRequest.execute(status);
 
     return res.json(request);
   }

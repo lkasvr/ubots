@@ -17,9 +17,9 @@ export interface IRequestFindById extends Request {
 }
 
 export interface IRequestFindByStatus extends Request {
-  client: Client;
-  assistant: Assistant | null;
-  team: Team | null;
+  client: { id: string; name: string; } | null;
+  assistant: { id: string; name: string; } | null;
+  team: { id: string; name: string; } | null;
 }
 
 export interface IRequestFindByAssistant extends Request {

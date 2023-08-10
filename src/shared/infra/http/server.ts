@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import routes from './routes'
 import AppError from '@shared/errors/AppError';
+import scheduleService from '../utils/schedule-services/schedule';
 
 const app = express();
 
@@ -23,6 +24,13 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     status: error.name,
     message: error.message
   });
+});
+
+const service = scheduleService();
+
+process.on('SIGINT', () => {
+  console.log('Encerrando agendamento e execução automática de serviços.')
+  service.cancel();
 });
 
 app.listen(3333, () => console.log('Server started on port 3333!'));

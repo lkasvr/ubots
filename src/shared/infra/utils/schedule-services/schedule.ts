@@ -13,11 +13,17 @@ const scheduleService = () => {
 
     const pedingRequests = requests.filter((request) => (request.status === 'PENDENTE'));
 
-    pedingRequests.forEach(async (request) => {
+    if (pedingRequests.length === 0)
+      return console.log(`[PING] ${new Date().toUTCString()} Schedule Services - Não há solicitações pendentes.`);
+
+    let i = 0;
+    for (const pedingRequest of pedingRequests) {
+      if (i === 2) return;
       const updateRequest = new UpdateRequestBySchedule();
-      const updatedRequest = await updateRequest.execute(request.id);
+      const updatedRequest = await updateRequest.execute(pedingRequest.id);
       console.log(updatedRequest);
-    });
+      i++;
+    };
   });
 }
 

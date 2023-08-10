@@ -2,8 +2,6 @@ import { Request } from '@prisma/client';
 import IRequestsRepository from '../domain/repositories/IRequestsRepository';
 import RequestsRepository from '../infra/repositories/prisma/RequestsRepository';
 import AppError from '@shared/errors/AppError';
-import { IUpdateRequest } from '../domain/models/IUpdateRequest';
-import ShowAssistantService from '@modules/assistant/services/ShowAssistantService';
 import ShowTeamByIdService from '@modules/team/services/ShowTeamByIdService';
 
 export default class UpdateRequestService {
@@ -13,15 +11,15 @@ export default class UpdateRequestService {
     this.requestsRepository = new RequestsRepository();
   }
 
-  public async execute(requestId: string): Promise<Request | AppError> {
+  public async execute(requestId: string): Promise<Request | AppError | string> {
     try {
       const request = await this.requestsRepository.findById(requestId);
 
-      if (!request) throw new AppError('Solicitação não encontrada.');
+      if (!request) return `${requestId}: Solicitação não encontrada.`;
 
-      if (!request.teamId) throw new AppError('Solicitação ainda não atribuída a um time.');
+      if (!request.teamId) return `${requestId}: Solicitação ainda não atribuída a um time.`;
 
-      if (request.assistantId) throw new AppError('Solicitação já atribuída a um assistente.');
+      if (request.assistantId) return `${requestId}: Solicitação já atribuída a um assistente.`;
 
       const showTeamByIdService = new ShowTeamByIdService();
 
@@ -29,14 +27,14 @@ export default class UpdateRequestService {
 
       if (team instanceof AppError) return team;
 
-      if (!team?.assistants) return new AppError('Time não possuí assistentes.');
+      if (!team?.assistants) return 'Time não possuí assistentes.';
 
       for (const assistant of team.assistants) {
         if (assistant.requests.length < 3)
-          return await this.requestsRepository.update({ requestId, assistantId: assistant.id, disconnect: false });
+          return await this.requestsRepository.update({ requestId, assistantId: assistant.id, status: 'ADERIDA', disconnect: false });
       }
 
-      return new AppError('Não foi possível atualizar a solicitação.');
+      return `Não foi possível atualizar a solicitação: ${requestId}`
     } catch (error) {
       if (error instanceof AppError) return error;
       console.error(error);

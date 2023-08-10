@@ -31,6 +31,16 @@ requestsRouter.get(
   requestController.show,
 );
 
+requestsRouter.get(
+  '/status/:status',
+  celebrate({
+    [Segments.PARAMS]: {
+      status: Joi.string().valid('PENDENTE', 'ADERIDA', 'CONCLUIDA').required(),
+    },
+  }),
+  requestController.showByStatus,
+);
+
 requestsRouter.put(
   '/',
   celebrate({

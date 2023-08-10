@@ -49,9 +49,9 @@ export default class RequestsRepository implements IRequestsRepository {
     const request = await this.ormRepository.request.findMany({
       where: { status },
       include: {
-        client: true,
-        assistant: true,
-        team: true,
+        client: { select: { id: true, name: true } },
+        assistant: { select: { id: true, name: true } },
+        team: { select: { id: true, name: true } },
       }
     });
 
