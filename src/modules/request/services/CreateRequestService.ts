@@ -26,18 +26,18 @@ export default class CreateRequestService {
 
       const team = await showTeam.execute(subject);
 
-      if (team instanceof AppError) throw new AppError(team.message);
+      if (team instanceof AppError) throw new AppError('Não existe time atribuído para tratar o assunto solicitado.', team, team.statusCode);
 
       let request: Request | null = null;
 
       let status = 'PENDENTE';
       let assistantId = undefined;
-      if (team.assistants.length > 0) {
+      if (team.assistants && team.assistants.length > 0) {
         for (const assistant of team.assistants) {
-          const assignedRequests = assistant.requests.filter((request) => request.status === 'ADERIDO');
+          const assignedRequests = assistant.requests.filter((request) => request.status === 'ADERIDA');
           if (assignedRequests.length < 3) {
             assistantId = assistant.id;
-            status = 'ADERIDO'
+            status = 'ADERIDA'
             request = await this.requestsRepository.create({
               status,
               desc,
@@ -47,18 +47,18 @@ export default class CreateRequestService {
               assistantId
             });
             break;
-          } else {
-            request = await this.requestsRepository.create({
-              status,
-              desc,
-              subject,
-              clientId,
-              teamId: team.id
-            });
-            break;
           }
         }
+        if (request) return request;
       }
+
+      request = await this.requestsRepository.create({
+        status,
+        desc,
+        subject,
+        clientId,
+        teamId: team.id
+      });
 
       if (!request) return new AppError('Não foi possível criar a solicitação.');
 

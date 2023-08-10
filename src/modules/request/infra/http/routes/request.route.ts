@@ -37,7 +37,7 @@ requestsRouter.put(
     [Segments.BODY]: {
       requestId: Joi.string().uuid().required(),
       assistantId: Joi.string().uuid(),
-      status: Joi.string(),
+      status: Joi.string().valid('PENDENTE', 'CONCLUIDA'),
     },
   }),
   requestController.update,

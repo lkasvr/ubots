@@ -23,7 +23,7 @@ export default class UpdateRequestService {
 
         const assistant = await showAssistantService.execute(assistantId);
 
-        if (assistant instanceof AppError) return assistant;
+        if (assistant instanceof AppError) return new AppError('O assistente indicado não fora encontrado.', assistant, assistant.statusCode);
 
         if (!assistant.team) throw new AppError('Assistente ainda sem um time designado.');
 
@@ -32,7 +32,7 @@ export default class UpdateRequestService {
 
         if (assistant.requests) {
           const assignedRequests = assistant.requests.filter((request) => {
-            return request.status === 'ADERIDO';
+            return request.status === 'ADERIDA';
           });
 
           if (assignedRequests.length >= 3) throw new AppError('Assistente atingiu o limite de solicitações designadas.');
@@ -40,17 +40,17 @@ export default class UpdateRequestService {
 
         if (request.assistantId && assistantId !== request.assistantId) {
           await this.requestsRepository.update({ requestId, disconnect: true });
-          const updatedRequest = await this.requestsRepository.update({ requestId, assistantId, status: 'ADERIDO', disconnect: false });
+          const updatedRequest = await this.requestsRepository.update({ requestId, assistantId, status: 'ADERIDA', disconnect: false });
 
           return updatedRequest;
         }
         if (!request.assistantId) {
-          const updatedRequest = await this.requestsRepository.update({ requestId, assistantId, status: 'ADERIDO', disconnect: false });
+          const updatedRequest = await this.requestsRepository.update({ requestId, assistantId, status: 'ADERIDA', disconnect: false });
 
           return updatedRequest;
         };
-      } else if (status && status !== request.status) {
-        const updatedRequest = await this.requestsRepository.update({ requestId, status, disconnect: false });
+      } else if (status && status !== request.status && status !== 'ADERIDA') {
+        const updatedRequest = await this.requestsRepository.update({ requestId, status, disconnect: true });
 
         return updatedRequest;
       }

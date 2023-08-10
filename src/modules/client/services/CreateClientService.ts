@@ -13,6 +13,10 @@ export default class CreateClientService {
 
   public async execute({ name, email }: ICreateClient): Promise<Client | AppError> {
     try {
+      const thereIsClient = await this.clientsRepository.findByEmail(email);
+
+      if (thereIsClient) throw new AppError('Não foi possível criar um Cliente. Email informado já em uso.');
+
       const client = await this.clientsRepository.create({ name, email });
 
       if (!client) throw new AppError('Não foi possível criar um Cliente.');

@@ -14,7 +14,7 @@ export default class ShowTeamBySubjectService {
     try {
       const team = await this.teamsRepository.findBySubject(subject);
 
-      if (!team) throw new AppError('Time não encontrado.');
+      if (!team?.[0]) throw new AppError('Time não encontrado.');
 
       return team[0];
     } catch (error) {

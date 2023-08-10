@@ -19,6 +19,8 @@ export interface ITeamFindById extends Team {
   subject: { id: string; name: string; } | null;
   assistants: {
     id: string;
+    name: string;
+    requests: { id: string; status: string; }[]
   }[];
 }
 

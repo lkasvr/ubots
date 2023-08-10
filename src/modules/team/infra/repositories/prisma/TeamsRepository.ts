@@ -34,7 +34,7 @@ export default class TeamsRepository implements ITeamsRepository {
       where: { id: teamId },
       include: {
         subject: { select: { id: true, name: true, } },
-        assistants: { select: { id: true } },
+        assistants: { select: { id: true, name: true, requests: { select: { id: true, status: true } } } },
       }
     });
 
@@ -79,7 +79,11 @@ export default class TeamsRepository implements ITeamsRepository {
   public async update({ teamId, data }: IUpdateTeam) {
     const updatedTeam = await this.ormRepository.team.update({
       where: { id: teamId },
-      data
+      data: {
+        subject: {
+
+        }
+      }
     });
 
     return updatedTeam;
