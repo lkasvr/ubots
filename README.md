@@ -35,7 +35,7 @@ O código da API foi desenvolvido em NODE **JS**, e sua organização foi estrut
 ## Lógica de Gerenciamento da Fileira de Designação de Solicitações
 
 - As solicitações criadas e que contenha os status **PENDENTE**, e não atribuídas a atendentes estão automaticamente sendo agendadas a cada 5 minumos para executarem o serviço de atualização da solicitação, e caso encontrado algum atendente que satisfaça a regra de negócio estipulada a solicitação será designada a ele.
-- A lógica do enfileiramento de solicitação com status **PENDENTES** atende também alguns critérios para não sobrecarregar o banco de dados, sendo permitido que somente duas (2) solicitação sejam atribuídas por vez, mesmo que sua quantidade supere esse número (Nessa vertente o serviço de agendamento gera logs para um feedback das operações)
+- A lógica do enfileiramento de solicitação com status **PENDENTES** atende também alguns critérios para não sobrecarregar o banco de dados, sendo permitido que somente duas (2) solicitação sejam atribuídas por vez, mesmo que sua quantidade supere esse número (Nessa vertente o serviço de agendamento gera logs no servidor da API para um feedback das operações)
 - Por uma questão de registro de histórico os atendentes possuem vinculados a eles as solicitações com status **CONCLUIDA** sem limite máximo, entretanto as que constam com o status **ADERIDA**  ou seja designadas a este atendente não passam de no máximo 3 solicitações.
 - O restante dos detalhes sobre a API constam da sua documentação no POSTMAN
 
