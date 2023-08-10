@@ -1,9 +1,15 @@
-import { Client, Request } from "@prisma/client";
+import { Client } from "@prisma/client";
 import { ICreateClient } from "../models/ICreateClient";
 import { IUpdateClient } from "../models/IUpdateClient";
 
 export interface IClientFind extends Client {
-  requests: Request[];
+  requests: {
+    id: string,
+    status: string,
+    desc: string,
+    createdAt: Date,
+    updatedAt: Date;
+  }[];
 }
 
 export default interface ClientsRepository {

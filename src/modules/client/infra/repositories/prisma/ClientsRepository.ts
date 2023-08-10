@@ -39,7 +39,7 @@ export default class ClientsRepository implements IClientsRepository {
 
   public async find() {
     const client = await this.ormRepository.client.findMany({
-      include: { requests: true }
+      include: { requests: { select: { id: true, status: true, desc: true, createdAt: true, updatedAt: true } } }
     });
 
     return client;
