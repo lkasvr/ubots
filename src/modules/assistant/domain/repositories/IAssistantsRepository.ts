@@ -16,7 +16,7 @@ export interface IAssistantFind extends Assistant {
   requests: {
     id: string;
     status: string;
-    subject: { id: string; name: string; },
+    subject: { id: string; name: string; } | null,
     client: { id: string; name: string; }
   }[] | null;
 }

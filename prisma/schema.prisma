@@ -43,11 +43,11 @@ model Request {
   id          String     @id @default(uuid())
   status      String
   desc        String
-  subjectId   String
-  subject     Subject    @relation(fields: [subjectId], references: [id], onDelete: NoAction)
+  subject     Subject?   @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  subjectId   String?
   client      Client     @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId    String
-  team        Team?      @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  team        Team?      @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId      String?
   assistant   Assistant? @relation(fields: [assistantId], references: [id], onDelete: SetNull)
   assistantId String?
@@ -59,7 +59,7 @@ model Subject {
   id        String    @id @default(uuid())
   name      String    @unique
   Request   Request[]
-  Team      Team      @relation(fields: [teamId], references: [id], onDelete: NoAction)
+  Team      Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId    String    @unique
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

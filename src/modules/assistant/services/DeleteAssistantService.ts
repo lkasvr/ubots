@@ -17,11 +17,11 @@ export default class DeleteAssistantService {
       if (!assistant) throw new AppError('Assistente não encontrado.');
 
       if (assistant.requests) {
-        const updateRequestService = new UpdateRequestService();
+        const updateRequest = new UpdateRequestService();
 
         assistant.requests.forEach(async (request) => {
-          if (request.status !== 'PENDENTE' && request.status !== 'CONCLUIDO')
-            await updateRequestService.execute({ requestId: request.id, status: 'PENDENTE' });
+          if (request.status === 'ADERIDA')
+            await updateRequest.execute({ requestId: request.id, status: 'PENDENTE' });
         });
       }
 

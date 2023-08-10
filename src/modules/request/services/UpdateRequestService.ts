@@ -31,9 +31,7 @@ export default class UpdateRequestService {
           throw new AppError('Assistente não pode ser atribuído para esta solicitação porque pertence a um time distinto, ou porque a solicitação ainda não foi encaminhada para nenhum time de atendimento.');
 
         if (assistant.requests) {
-          const assignedRequests = assistant.requests.filter((request) => {
-            return request.status === 'ADERIDA';
-          });
+          const assignedRequests = assistant.requests.filter((request) => request.status === 'ADERIDA');
 
           if (assignedRequests.length >= 3) throw new AppError('Assistente atingiu o limite de solicitações designadas.');
         }
@@ -49,8 +47,8 @@ export default class UpdateRequestService {
 
           return updatedRequest;
         };
-      } else if (status && status !== request.status && status !== 'ADERIDA') {
-        const updatedRequest = await this.requestsRepository.update({ requestId, status, disconnect: true });
+      } else if (status) {
+        const updatedRequest = await this.requestsRepository.update({ requestId, status, disconnect: status !== 'CONCLUIDA' });
 
         return updatedRequest;
       }

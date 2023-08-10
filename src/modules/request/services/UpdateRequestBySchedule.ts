@@ -30,7 +30,8 @@ export default class UpdateRequestService {
       if (!team?.assistants) return 'Time não possuí assistentes.';
 
       for (const assistant of team.assistants) {
-        if (assistant.requests.length < 3)
+        const assignedRequests = assistant.requests.filter((request) => request.status === 'ADERIDA');
+        if (assignedRequests.length < 3)
           return await this.requestsRepository.update({ requestId, assistantId: assistant.id, status: 'ADERIDA', disconnect: false });
       }
 
