@@ -3,6 +3,10 @@ Desafio técnico, desenvolvimento de uma API Rest como solução para uma fintec
 
 </br>
 
+### Link da Documentação para uso da API: https://documenter.getpostman.com/view/10732905/2s9Xy3qqnX
+
+</br>
+
 ### Link do Deploy na Vercel:
 
 </br>
@@ -10,7 +14,7 @@ Desafio técnico, desenvolvimento de uma API Rest como solução para uma fintec
 
 ## Organização do Código
 
-O código da API foi desenvolvido em NODE **JS**, e sua organização foi estruturada em um padrão de arquitetura orientada a microserviços. 
+O código da API foi desenvolvido em NODE **JS**, e sua organização foi estruturada em um padrão de arquitetura orientada a microserviços.
 
 </br>
 
