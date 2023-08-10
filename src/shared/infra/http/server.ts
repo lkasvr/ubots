@@ -26,11 +26,11 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-// const service = scheduleService();
+const service = scheduleService();
 
-// process.on('SIGINT', () => {
-//   console.log('Encerrando agendamento e execução automática de serviços.')
-//   service.cancel();
-// });
+process.on('SIGINT', () => {
+  console.log('Encerrando agendamento e execução automática de serviços.')
+  service.cancel();
+});
 
 app.listen(3333, () => console.log('Server started on port 3333!'));

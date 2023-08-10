@@ -20,10 +20,24 @@ A automatização da Central de Relacionamento foi proposta baseada em três reg
 
 </br>
 
+**ATENÇÃO**
+
+Para que você possa testar a API corretamente é necessário seguir os passos informados aqui e na documentação, ademais existem duas formas, uma através do client front-end construído com essa finalidade seu repositório pode ser encontrado aqui: https://github.com/lkasvr/ubots_front_end
+
+E outra através de uma plataforma de gerenciamento de requisições HTTP como o **POSTMAN**.
 
 ## Organização do Código
 
 O código da API foi desenvolvido em NODE **JS**, e sua organização foi estruturada em um padrão de arquitetura orientada a microserviços.
+
+</br>
+
+## Lógica de Gerenciamento da Fileira de Designação de Solicitações
+
+- As solicitações criadas e que contenha os status **PENDENTE**, e não atribuídas a atendentes estão automaticamente sendo agendadas a cada 5 minumos para executarem o serviço de atualização da solicitação, e caso encontrado algum atendente que satisfaça a regra de negócio estipulada a solicitação será designada a ele.
+- A lógica do enfileiramento de solicitação com status **PENDENTES** atende também alguns critérios para não sobrecarregar o banco de dados, sendo permitido que somente duas (2) solicitação sejam atribuídas por vez, mesmo que sua quantidade supere esse número
+- Por uma questão de registro de histórico os atendentes possuem vinculados a eles as solicitações com status **CONCLUIDA** sem limite máximo, entretanto as que constam com o status **ADERIDA**  ou seja designadas a este atendente não passam de no máximo 3 solicitações.
+- O restante dos detalhes sobre a API constam da sua documentação no POSTMAN
 
 </br>
 
@@ -53,3 +67,11 @@ npm run dev
 ```
 
 </br>
+
+Servidor estará executando por padrão no seguinte endereço e porta [http://localhost:3333](http://localhost:3333)
+
+Caso a aplicação não entre em execução, pode ter havido um conflito de porta com algum processo do seu sistema já em execução, nesse caso altere apenas a porta no arquvi **server.ts** e execute o comando acima novamente.
+
+</br>
+
+
